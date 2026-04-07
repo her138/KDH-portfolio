@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styling.css">
+    <link rel="stylesheet" href="media.css">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <title>AR Autoworks Cpt Gallery</title>
+</head>
+
+<body> 
+    <!-- Header -->
+    <header id="navbar">
+        <div class="container d-flex justify-content-between align-items-center">
+            <!-- Logo -->
+            <div class="logo">
+                <img src="Untitled-1.png" alt="Company Logo" style="width: 175px; height: 75px;">
+            </div>
+            <!-- Menu Toggle Button -->
+            <div class="menu-toggle" id="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <!-- Navigation Bar -->
+            <nav class="navbar">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a href="index.html#home" class="nav-link">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="index.html#about" class="nav-link">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="index.html#services" class="nav-link">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="index.html#contact" class="nav-link">Contact</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar">
+        <div class="close-btn" id="close-btn">&times;</div>
+        <ul class="sidebar-nav">
+            <li><a href="index.html#home" class="menu-item">Home</a></li>
+            <li><a href="index.html#about" class="menu-item">About</a></li>
+            <li><a href="index.html#services" class="menu-item">Services</a></li>
+            <li><a href="index.html#contact" class="menu-item">Contact</a></li>
+            <li><a href="gallery.html" class="menu-item">Gallery</a></li>
+        </ul>
+        
+        <div class="social-icons">
+            <button class="icon-button">
+                <a href="tel:+27847488950">
+                    <img src="./icons/icons8-call-48.png" alt="Call">
+                </a>
+            </button>
+            <button class="icon-button">
+                <a href="https://www.instagram.com/arautoworkscpt?utm_source=ig_web_button_share_sheet&igshid=ZDNlZDc0MzIxNw==" target="_blank">
+                    <img src="./icons/icons8-instagram-48.png" alt="Instagram">
+                </a>
+            </button>
+            <button class="icon-button">
+                <a href="https://l.instagram.com/?u=https%3A%2F%2Fwww.facebook.com%2Fprofile.php%3Fid%3D100090152215070%26mibextid%3DLQQJ4d&e=AT3PpGojxgcGZ-acYr6PShKmmudinUiq6pVq8jHChCnae_dIQgRVOpUskt-ZkG36eRQn6byP0dnMZZiPQP5VPGh40EZkeaJMaCBvjw" target="_blank">
+                    <img src="./icons/icons8-facebook-48.png" alt="Facebook">
+                </a>
+            </button>
+            <button class="icon-button">
+                <a href="https://wa.me/+27847488950" class="whatsapp-button" target="_blank">
+                    <img src="./icons/icons8-whatsapp-48.png" alt="WhatsApp">
+                </a>
+            </button>
+        </div>
+    </div>
+    <!-- Gallery Section -->
+    <section id="gallery" class="gallery">
+        <h2>Gallery</h2>
+        <div class="gallery-container">
+            <div class="gallery-item">
+                <img src="./imgs/Gallery1.jpeg" alt="Factory Fixing Car 1">
+            </div>
+            <div class="gallery-item">
+                <img src="./imgs/Gallery2.jpeg" alt="Factory Fixing Car 2">
+            </div>
+            <div class="gallery-item">
+                <img src="./imgs/IMG_2488.jpeg" alt="BMW">
+            </div>
+            <div class="gallery-item">
+                <img src="./imgs/IMG_4850.jpeg" alt="Mini Cooper">
+            </div>
+            <div class="gallery-item">
+                <img src="./imgs/IMG_5309.jpeg" alt="Factory Fixing Car 1">
+            </div>
+            <div class="gallery-item">
+                <img src="./imgs/IMG_5729.jpeg" alt="Factory Fixing Car 2">
+            </div>
+            <div class="gallery-item">
+                <img src="./imgs/IMG_5733.jpeg" alt="BMW">
+            </div>
+            <div class="gallery-item">
+                <img src="./imgs/IMG_5743.jpeg" alt="Mini Cooper">
+            </div>
+        </div>
+    </section>
+
+    <section id="reviews" class="reviews">
+        <h2>Customer Reviews</h2>
+        <div class="reviews-wrapper">
+            <button id="prev-btn" class="nav-btn">❮</button>
+            <div class="reviews-container">
+                <div class="review-item">
+                    <div class="review-header">
+                        <img src="./icons/meghan oddy.png" alt="User Image" class="review-avatar">
+                        <div class="review-info">
+                            <p class="review-author">Meghan Oddy</p>
+                            <div class="review-stars">★★★★★</div>
+                            <span class="review-date">2 months ago</span>
+                        </div>
+                    </div>
+                    <p class="review-text">"Took my VW Golf 7 for new brake pads and disks. They were efficient, friendly and cheaper than any other quote I received. I got my car back within a couple of hours and they even cleaned the entire car. I am very happy with my experience and would highly recommend."</p>
+                </div>
+    
+                <div class="review-item">
+                    <div class="review-header">
+                        <img src="./icons/nabiehl bester.png" alt="User Image" class="review-avatar">
+                        <div class="review-info">
+                            <p class="review-author">Nabiehl Bester</p>
+                            <div class="review-stars">★★★★★</div>
+                            <span class="review-date">3 months ago</span>
+                        </div>
+                    </div>
+                    <p class="review-text">"Excellent service, been using these guys for the past year and received excellent service. They took good care of my vehicle and communication is excellent too. Would highly recommend anyone to them."</p>
+                </div>
+    
+                <div class="review-item">
+                    <div class="review-header">
+                        <img src="./icons/saadiq mohamed.png" alt="User Image" class="review-avatar">
+                        <div class="review-info">
+                            <p class="review-author">Saadiq Mohamed</p>
+                            <div class="review-stars">★★★★★</div>
+                            <span class="review-date">6 months ago</span>
+                        </div>
+                    </div>
+                    <p class="review-text">"Exceptional and very knowledgeable, always trying to use original BMW parts."</p>
+                </div>
+    
+                <div class="review-item">
+                    <div class="review-header">
+                        <img src="./icons/tauriqe geland.png" alt="User Image" class="review-avatar">
+                        <div class="review-info">
+                            <p class="review-author">Tauriqe Geland</p>
+                            <div class="review-stars">★★★★★</div>
+                            <span class="review-date">5 months ago</span>
+                        </div>
+                    </div>
+                    <p class="review-text">"The place was very easy to find, the staff is friendly and I am extremely happy with the service... Will recommend to anyone."</p>
+                </div>
+            </div>
+            <button id="next-btn" class="nav-btn">❯</button>
+        </div>
+    </section>
+    
+    
+    
+   
+    <!-- WhatsApp Button -->
+    <a href="https://wa.me/+27847488950" class="whatsapp-button">
+        <i class="fab fa-whatsapp"><img src="./icons/whatsapp.png"></i>
+    </a>
+<footer>
+    <div class="footer-container">
+    <div class="footer-section-container">
+        <div class="footer-section">
+            <h4>Address</h4>
+            <p><a href="https://www.google.com/maps/search/?api=1&query=8+Factory+Road,+Salt+River,+Cape+Town,+7925" 
+                target="_blank">8 Factory Road,<br> 
+                Salt River, Cape Town, 7925</a></p>
+        </div>
+        <div class="footer-section">
+            <h4>Hours</h4>
+            <p>Monday—Friday:</p>
+            <p>9:00 - 17:10</p>
+            <p>Saturday—Sunday:</p>
+            <p>Closed!</p>
+        </div>
+        <div class="footer-section">
+            <h4>Socials</h4>
+            <p><a href="https://www.instagram.com/arautoworkscpt?utm_source=ig_web_button_share_sheet&igshid=ZDNlZDc0MzIxNw==" target="_blank"><i class="fab fa-instagram"></i> Instagram</a></p>
+            <p><a href="https://l.instagram.com/?u=https%3A%2F%2Fwww.facebook.com%2Fprofile.php%3Fid%3D100090152215070%26mibextid%3DLQQJ4d&e=AT3PpGojxgcGZ-acYr6PShKmmudinUiq6pVq8jHChCnae_dIQgRVOpUskt-ZkG36eRQn6byP0dnMZZiPQP5VPGh40EZkeaJMaCBvjw" target="_blank"><i class="fab fa-facebook"></i> Facebook</a></p>
+        </div>
+        <div class="footer-section">
+            <h4>Contact</h4>
+            <p><a href="mailto:Ashleyretief23@icloud.com">Ashleyretief23@icloud.com</a></p>
+                    <p><a href="tel:+27847488950">(+27) 84 748 8950</a></p>
+        </div>
+        <div class="footer-section">
+            <h4>Pages</h4>
+            <p><a href="index.html#home">Home</a></p>
+            <p><a href="index.html#about">About</a></p>
+            <p><a href="index.html#services">Services</a></p>
+            <p><a href="index.html#contact">Contact</a></p>
+            <p><a href="gallery.html">Gallery</a></p>
+        </div>
+        
+    </div>
+</div>
+<div class="bottom-footer">
+    <div class="bottom-footer-content">
+        <p class="btm-rights"> &copy; 2024 AR Autoworks & Web Klinic . All rights reserved.</p>
+        <p><a href="sitemap.html">Sitemap</a></p>
+        <p><a href="credits.html">Credits</a></p>
+    </div>
+</div>
+</footer>
+    <script src="script.js"></script>
+</body>
+</html>

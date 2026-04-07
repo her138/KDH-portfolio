@@ -1,0 +1,347 @@
+/* src/components/GlassButton.css */
+
+@property --angle-1 {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: -75deg;
+}
+
+@property --angle-2 {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: -45deg;
+}
+
+:root {
+  --anim-hover-time: 400ms;
+  --anim-hover-ease: cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Button Wrapper */
+.glass-button-wrapper {
+  position: relative;
+  z-index: 2;
+  border-radius: 999vw;
+  background: transparent;
+  pointer-events: none;
+  transition: all var(--anim-hover-time) var(--anim-hover-ease);
+  display: block;
+}
+
+/* Button Shadow */
+.button-shadow {
+  --shadow-cutoff-fix: 2em;
+  position: absolute;
+  width: calc(100% + var(--shadow-cutoff-fix));
+  height: calc(100% + var(--shadow-cutoff-fix));
+  top: calc(0% - var(--shadow-cutoff-fix) / 2);
+  left: calc(0% - var(--shadow-cutoff-fix) / 2);
+  filter: blur(clamp(2px, 0.125em, 12px));
+  overflow: visible;
+  pointer-events: none;
+}
+
+.button-shadow::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  border-radius: 999vw;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.1));
+  width: calc(100% - var(--shadow-cutoff-fix) - 0.25em);
+  height: calc(100% - var(--shadow-cutoff-fix) - 0.25em);
+  top: calc(var(--shadow-cutoff-fix) - 0.5em);
+  left: calc(var(--shadow-cutoff-fix) - 0.875em);
+  padding: 0.125em;
+  box-sizing: border-box;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  transition: all var(--anim-hover-time) var(--anim-hover-ease);
+  opacity: 1;
+}
+
+/* Button Base */
+.glass-button {
+  --border-width: clamp(1px, 0.0625em, 4px);
+  all: unset;
+  cursor: pointer;
+  position: relative;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  pointer-events: auto;
+  z-index: 3;
+  background: linear-gradient(
+    -75deg,
+    rgba(255, 255, 255, 0.05),
+    rgba(255, 255, 255, 0.2),
+    rgba(255, 255, 255, 0.05)
+  );
+  border-radius: 999vw;
+  box-shadow: inset 0 0.125em 0.125em rgba(0, 0, 0, 0.05),
+    inset 0 -0.125em 0.125em rgba(255, 255, 255, 0.5),
+    0 0.25em 0.125em -0.125em rgba(0, 0, 0, 0.2),
+    0 0 0.1em 0.25em inset rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(clamp(1px, 0.125em, 4px));
+  transition: all var(--anim-hover-time) var(--anim-hover-ease);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  color: rgba(50, 50, 50, 1);
+  padding: 0.75em 1.5em;
+  min-height: 44px;
+  min-width: 44px;
+  line-height: 1.2;
+  text-decoration: none;
+}
+
+.glass-button:hover {
+  transform: scale(0.975);
+  box-shadow: inset 0 0.125em 0.125em rgba(0, 0, 0, 0.05),
+    inset 0 -0.125em 0.125em rgba(255, 255, 255, 0.5),
+    0 0.15em 0.05em -0.1em rgba(0, 0, 0, 0.25),
+    0 0 0.05em 0.1em inset rgba(255, 255, 255, 0.5);
+}
+
+.glass-button:active {
+  transform: scale(0.95);
+}
+
+.glass-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Button Content */
+.glass-button .button-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  position: relative;
+  z-index: 4;
+  width: 100%;
+}
+
+.glass-button .button-icon {
+  transition: transform 0.25s ease;
+  flex-shrink: 0;
+}
+
+.glass-button:hover .button-icon {
+  transform: translateX(2px);
+}
+
+.glass-button.flex-col .button-content {
+  flex-direction: column;
+  gap: 0.25em;
+}
+
+.glass-button.flex-col:hover .button-icon {
+  transform: translateY(-2px);
+}
+
+.glass-button.icon-only {
+  padding: 0.75em;
+}
+
+.glass-button.w-full {
+  width: 100%;
+}
+
+/* Inner Glow */
+.glass-button .button-content::after {
+  content: "";
+  display: block;
+  position: absolute;
+  z-index: -1;
+  width: calc(100% - var(--border-width));
+  height: calc(100% - var(--border-width));
+  top: calc(0% + var(--border-width) / 2);
+  left: calc(0% + var(--border-width) / 2);
+  border-radius: 999vw;
+  background: linear-gradient(
+    var(--angle-2),
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.5) 40% 50%,
+    rgba(255, 255, 255, 0) 55%
+  );
+  mix-blend-mode: screen;
+  pointer-events: none;
+  background-size: 200% 200%;
+  background-position: 0% 50%;
+  transition: background-position calc(var(--anim-hover-time) * 1.25) var(--anim-hover-ease),
+    --angle-2 calc(var(--anim-hover-time) * 1.25) var(--anim-hover-ease);
+}
+
+.glass-button:hover .button-content::after {
+  background-position: 25% 50%;
+}
+
+.glass-button:active .button-content::after {
+  background-position: 50% 15%;
+  --angle-2: -15deg;
+}
+
+/* Button Outline */
+.glass-button::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  border-radius: 999vw;
+  width: calc(100% + var(--border-width));
+  height: calc(100% + var(--border-width));
+  top: calc(0% - var(--border-width) / 2);
+  left: calc(0% - var(--border-width) / 2);
+  padding: var(--border-width);
+  box-sizing: border-box;
+  background: conic-gradient(
+      from var(--angle-1) at 50% 50%,
+      rgba(0, 0, 0, 0.5),
+      rgba(0, 0, 0, 0) 5% 40%,
+      rgba(0, 0, 0, 0.5) 50%,
+      rgba(0, 0, 0, 0) 60% 95%,
+      rgba(0, 0, 0, 0.5)
+    ),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5));
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  transition: all var(--anim-hover-time) var(--anim-hover-ease),
+    --angle-1 500ms ease;
+  box-shadow: inset 0 0 0 calc(var(--border-width) / 2) rgba(255, 255, 255, 0.5);
+}
+
+.glass-button:hover::after {
+  --angle-1: -125deg;
+}
+
+.glass-button:active::after {
+  --angle-1: -75deg;
+}
+
+/* Active Filter State */
+.glass-button.active-filter {
+  background: linear-gradient(
+    -75deg,
+    rgba(235, 94, 40, 0.2),
+    rgba(235, 94, 40, 0.3),
+    rgba(235, 94, 40, 0.2)
+  );
+  color: #EB5E28;
+}
+
+.glass-button.active-filter::after {
+  background: conic-gradient(
+      from var(--angle-1) at 50% 50%,
+      #EB5E28,
+      rgba(235, 94, 40, 0) 5% 40%,
+      #EB5E28 50%,
+      rgba(235, 94, 40, 0) 60% 95%,
+      #EB5E28
+    ),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5));
+}
+
+/* Shadow Hover Effects */
+.glass-button-wrapper:has(.glass-button:hover) .button-shadow {
+  filter: blur(clamp(2px, 0.0625em, 6px));
+}
+
+.glass-button-wrapper:has(.glass-button:hover) .button-shadow::after {
+  top: calc(var(--shadow-cutoff-fix) - 0.875em);
+  opacity: 1;
+}
+
+/* Active Rotation */
+.glass-button-wrapper:has(.glass-button:active) {
+  transform: rotate3d(1, 0, 0, 25deg);
+}
+
+.glass-button-wrapper:has(.glass-button:active) .glass-button {
+  box-shadow: inset 0 0.125em 0.125em rgba(0, 0, 0, 0.05),
+    inset 0 -0.125em 0.125em rgba(255, 255, 255, 0.5),
+    0 0.125em 0.125em -0.125em rgba(0, 0, 0, 0.2),
+    0 0 0.1em 0.25em inset rgba(255, 255, 255, 0.2),
+    0 0.225em 0.05em 0 rgba(0, 0, 0, 0.05),
+    0 0.25em 0 0 rgba(255, 255, 255, 0.75),
+    inset 0 0.25em 0.05em 0 rgba(0, 0, 0, 0.15);
+}
+
+.glass-button-wrapper:has(.glass-button:active) .button-shadow {
+  filter: blur(clamp(2px, 0.125em, 12px));
+}
+
+.glass-button-wrapper:has(.glass-button:active) .button-shadow::after {
+  top: calc(var(--shadow-cutoff-fix) - 0.5em);
+  opacity: 0.75;
+}
+
+/* Dark Mode */
+.dark .glass-button {
+  color: rgba(220, 220, 220, 1);
+  background: linear-gradient(
+    -75deg,
+    rgba(255, 255, 255, 0.02),
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0.02)
+  );
+}
+
+.dark .glass-button::after {
+  background: conic-gradient(
+      from var(--angle-1) at 50% 50%,
+      rgba(255, 255, 255, 0.3),
+      rgba(255, 255, 255, 0) 5% 40%,
+      rgba(255, 255, 255, 0.3) 50%,
+      rgba(255, 255, 255, 0) 60% 95%,
+      rgba(255, 255, 255, 0.3)
+    ),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2));
+}
+
+.dark .glass-button.active-filter {
+  color: #EB5E28;
+  background: linear-gradient(
+    -75deg,
+    rgba(235, 94, 40, 0.15),
+    rgba(235, 94, 40, 0.25),
+    rgba(235, 94, 40, 0.15)
+  );
+}
+
+/* Mobile/Touch Adjustments */
+@media (hover: none) and (pointer: coarse) {
+  .glass-button .button-content::after,
+  .glass-button:active .button-content::after {
+    --angle-2: -45deg;
+  }
+  
+  .glass-button::after,
+  .glass-button:hover::after,
+  .glass-button:active::after {
+    --angle-1: -75deg;
+  }
+  
+  .glass-button:hover {
+    transform: scale(1);
+  }
+  
+  .glass-button:active {
+    transform: scale(0.975);
+  }
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .glass-button {
+    padding: 0.6em 1.2em;
+    font-size: 0.9em;
+    min-height: 40px;
+  }
+  
+  .glass-button.icon-only {
+    padding: 0.6em;
+  }
+}

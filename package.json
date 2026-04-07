@@ -1,0 +1,20 @@
+{
+  "name": "kdh-portfolio",
+  "version": "1.0.0",
+  "description": "KDH Portfolio - MERN Stack Portfolio Website",
+  "scripts": {
+    "install-all": "npm install --prefix client && npm install --prefix server",
+    "client": "cd client && npm run dev",
+    "server": "cd server && npm run dev",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "build": "cd client && npm run build",
+    "seed": "cd server && node seed.js",
+    "start": "cd server && npm start"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
