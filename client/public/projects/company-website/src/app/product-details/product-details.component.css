@@ -1,0 +1,281 @@
+.product-details-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.back-btn {
+  background: transparent;
+  color: #5a3e5e;
+  border: none;
+  padding: 10px 0;
+  cursor: pointer;
+  margin-bottom: 30px;
+  font-size: 0.9rem;
+  transition: color 0.3s;
+}
+
+.back-btn:hover {
+  color: #7a5a7e;
+}
+
+.product-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  background: white;
+  padding: 0;
+  border-radius: 8px;
+}
+
+.product-image {
+  position: relative;
+}
+
+.product-image img {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid #f0e8e0;
+}
+
+.badge {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: #7b657e;
+  color: white;
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+}
+
+.product-info h1 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: #2c2c2c;
+  font-weight: 400;
+  font-family: 'Playfair Display', 'Times New Roman', serif;
+}
+
+.category {
+  color: #5a3e5e;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 15px;
+  font-weight: 400;
+}
+
+/* Rating Stars Styles - Inline display */
+.product-rating {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  white-space: nowrap;
+}
+
+.stars {
+  display: inline-flex;
+  gap: 3px;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.star {
+  font-size: 1rem;
+  color: #ddd;
+  display: inline-block;
+}
+
+.star.filled {
+  color: #ffc107;
+}
+
+.rating-value {
+  font-size: 0.85rem;
+  color: #999;
+  display: inline-block;
+}
+
+.price {
+  font-size: 1.8rem;
+  color: #5a3e5e;
+  margin: 20px 0;
+  font-weight: 500;
+}
+
+.description h3 {
+  font-size: 1.1rem;
+  margin: 25px 0 15px;
+  color: #2c2c2c;
+  font-weight: 500;
+}
+
+.full-description {
+  color: #666;
+  line-height: 1.8;
+  font-weight: 300;
+}
+
+/* Accordion Styles - Only top and bottom borders */
+.features-accordion {
+  margin: 25px 0;
+  border-top: 1px solid #f0e8e0;
+  border-bottom: 1px solid #f0e8e0;
+  border-left: none;
+  border-right: none;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+.features-accordion:hover {
+  border-top-color: #5a3e5e;
+  border-bottom-color: #5a3e5e;
+}
+
+.accordion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+  cursor: pointer;
+  background: transparent;
+  transition: all 0.3s;
+}
+
+.accordion-header:hover {
+  background: transparent;
+}
+
+.accordion-header h3 {
+  font-size: 1rem;
+  font-weight: 500;
+  margin: 0;
+  color: #2c2c2c;
+}
+
+.accordion-icon {
+  stroke: #5a3e5e;
+  transition: transform 0.3s ease;
+}
+
+.accordion-icon.rotated {
+  transform: rotate(180deg);
+}
+
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+  background: white;
+}
+
+.accordion-content.open {
+  max-height: 200px;
+  transition: max-height 0.3s ease-in;
+}
+
+.accordion-content ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.accordion-content li {
+  padding: 12px 0;
+  color: #666;
+  font-size: 0.9rem;
+  border-bottom: 1px solid #f0e8e0;
+  font-weight: 300;
+}
+
+.accordion-content li:last-child {
+  border-bottom: none;
+  padding-bottom: 15px;
+}
+
+.accordion-content li:first-child {
+  padding-top: 0;
+}
+
+.cart-btn {
+  background: #5a3e5e;
+  color: white;
+  border: none;
+  padding: 15px 40px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-top: 30px;
+  width: 100%;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-radius: 4px;
+}
+
+.cart-btn:hover {
+  background: #7a5a7e;
+  transform: translateY(-2px);
+}
+
+.not-found {
+  text-align: center;
+  padding: 60px;
+}
+
+.not-found h2 {
+  color: #666;
+  margin-bottom: 20px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .product-details-container {
+    padding: 20px;
+  }
+  
+  .product-details {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  
+  .product-info h1 {
+    font-size: 1.5rem;
+  }
+  
+  .price {
+    font-size: 1.5rem;
+  }
+  
+  .star {
+    font-size: 0.9rem;
+  }
+  
+  .rating-value {
+    font-size: 0.8rem;
+  }
+  
+  .accordion-header {
+    padding: 12px 0;
+  }
+  
+  .accordion-content li {
+    padding: 10px 0;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .product-info h1 {
+    font-size: 1.3rem;
+  }
+  
+  .accordion-header h3 {
+    font-size: 0.9rem;
+  }
+  
+  .star {
+    font-size: 0.85rem;
+  }
+}

@@ -8,13 +8,13 @@ const Footer = () => {
   const socialLinks = [
     { 
       icon: FiLinkedin, 
-      href: 'https://linkedin.com/in/Kyle-Hermanus', 
+      href: 'https://linkedin.com/in/kyle-hermanus-017081234', 
       label: 'LinkedIn',
       color: '#0077b5'
     },
     { 
       icon: FiGithub, 
-      href: 'https://github.com/Kyle-Hermanus', 
+      href: 'https://github.com/her-138', 
       label: 'GitHub',
       color: '#333'
     },
@@ -26,13 +26,13 @@ const Footer = () => {
     },
     { 
       icon: FaInstagram, 
-      href: 'https://instagram.com/kyle_hermanus', 
+      href: 'https://instagram.com/MasterCraftSites', 
       label: 'Instagram',
       color: '#E4405F'
     },
     { 
       icon: FaFacebook, 
-      href: 'https://facebook.com/kyle.hermanus', 
+      href: 'https://facebook.com/MasterCrafts_Sites', 
       label: 'Facebook',
       color: '#1877f2'
     }

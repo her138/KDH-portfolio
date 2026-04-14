@@ -4,6 +4,12 @@ import { motion } from 'framer-motion';
 import { FiDownload, FiMapPin, FiBriefcase, FiFolder } from 'react-icons/fi';
 
 const About = () => {
+  const handleDownloadCV = () => {
+    // The PDF is located in public/documents/ folder
+    const cvPath = `/documents/${encodeURIComponent('latest cv kyle-2.pdf')}`;
+    window.open(cvPath, '_blank');
+  };
+
   return (
     <section id="about" className="section-padding">
       <div className="container-custom">
@@ -72,7 +78,7 @@ const About = () => {
               {/* Centered Download Resume Button */}
               <div className="flex justify-center">
                 <button
-                  onClick={() => { }}
+                  onClick={handleDownloadCV}
                   className="glass-button-resume"
                 >
                   <span className="button-content">

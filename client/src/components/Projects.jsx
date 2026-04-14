@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiExternalLink, FiGithub, FiEye, FiX } from 'react-icons/fi';
-import GlassButton from './GlassButton'; // Add this import
+import GlassButton from './GlassButton';
 
 const Projects = () => {
   const [projects, setProjects] = useState([]);
@@ -22,8 +22,8 @@ const Projects = () => {
           title: 'Drum Kit',
           software: ['JavaScript', 'CSS', 'HTML'],
           description: 'An interactive drum kit web application that allows users to play different drum sounds using keyboard keys or mouse clicks.',
-          image: '/public/projects/Drum_Kit/drum-kit-image.png',
-          projectUrl: '/projects/Drum_Kit/Drum_Kit (2)/index.js',
+          image: '/projects/Drum_Kit/drum-kit-image.png',
+          projectUrl: '/projects/Drum_Kit/Drum_Kit (2)/index.html',
           projectType: 'web_app',
           github: 'https://github.com',
           featured: true
@@ -33,7 +33,7 @@ const Projects = () => {
           title: 'Gunk Juice Logo',
           software: ['Adobe Illustrator', 'Photoshop'],
           description: 'Modern logo design for an energy drink brand, focusing on bold typography.',
-          image: '/public/projects/gunk/gunk-logo.png',
+          image: '/projects/Gunk/gunk-logo.png',
           projectUrl: '#',
           projectType: 'logo',
           github: null,
@@ -44,12 +44,23 @@ const Projects = () => {
           title: 'AR AutoWorks Website',
           software: ['React', 'Tailwind CSS', 'Figma'],
           description: 'Complete website redesign for an auto repair shop featuring online booking and service catalog.',
-          image: '/public/images/ar-logo.png',
+          image: '/images/ar-logo.png',
           projectUrl: '/projects/AR AutoWorks Cpt/index.html',
           projectType: 'website',
           github: 'https://github.com',
           featured: true
-        }
+        },
+        {
+  _id: '4',
+  title: 'SaraJane – Hair Care Brand',
+  software: ['Angular', 'TypeScript', 'CSS', 'HTML'],
+  description: 'A complete brand website for a luxury hair care and satin essentials company. Features product catalog, shopping cart, blog, and contact form.',
+  image: '/projects/company-website/public/images/sj-logo.jpg',
+  projectUrl: '/projects/company-website/index.html',
+  projectType: 'website',
+  github: 'https://github.com',
+  featured: true
+}
       ]);
     } catch (error) {
       console.error('Error fetching projects:', error);

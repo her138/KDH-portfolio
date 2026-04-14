@@ -1,0 +1,98 @@
+<div class="home-container">
+
+    <div class="custom-notification" *ngIf="showNotification">
+    {{ notificationMessage }}
+  </div>
+  
+  <!-- Hero Section with Banner Image -->
+  <section class="hero" [style.backgroundImage]="'url(images/banner/banner-1.png)'">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1>SaraJane</h1>
+      <p class="hero-subtitle">Luxury Hair Care & Satin Essentials</p>
+      <p class="hero-description">Elevate your hair care ritual with our premium satin collection and nourishing treatments. Designed for the modern woman who values elegance and self-care.</p>
+      <div class="hero-buttons">
+        <a routerLink="/products" class="btn-primary">Shop Now</a>
+        <a routerLink="/about" class="btn-secondary">Our Story</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Shop by Category Section -->
+  <section class="categories">
+    <h2>Shop by Category</h2>
+    <div class="categories-grid">
+      <!-- Satin Range Card -->
+         <div class="category-card haircare-card" [style.backgroundImage]="'url(images/products/satin-bonnet.png)'">
+        <div class="category-overlay"></div>
+      <div class="category-content">
+          <h3 class="category-title">Satin Range</h3>
+          <a routerLink="/products" class="explore-btn">Explore</a>
+        </div>
+      </div>
+
+      <!-- Hair Care Card with Background Image -->
+      <div class="category-card haircare-card" [style.backgroundImage]="'url(images/products/Shampoo-1.png)'">
+        <div class="category-overlay"></div>
+        <div class="category-content">
+          <h3 class="category-title">Hair Care</h3>
+          <a routerLink="/products" class="explore-btn">Explore</a>
+        </div>
+      </div>
+      
+      <!-- Accessories Card with Background Image -->
+      <div class="category-card accessories-card" [style.backgroundImage]="'url(images/products/Detangle-Brush.png)'">
+        <div class="category-overlay"></div>
+        <div class="category-content">
+          <h3 class="category-title">Accessories</h3>
+          <a routerLink="/products" class="explore-btn">Explore </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mission Statement -->
+  <section class="mission">
+    <div class="mission-content">
+      <h2>Our Philosophy</h2>
+      <p>At SaraJane, we believe that true beauty begins with self-care. We create luxurious, sustainable products that nurture your hair while adding elegance to your daily ritual. Every piece is thoughtfully designed to bring comfort and sophistication to your life.</p>
+    </div>
+  </section>
+
+  <!-- Featured Products Preview - Same design as Collection -->
+  <section class="featured">
+    <h2>New Arrivals</h2>
+    <div class="featured-grid">
+      <div class="featured-item" *ngFor="let product of featuredProducts">
+        <div class="product-image-container">
+          <img [src]="product.image" [alt]="product.name" class="product-image" (click)="viewProduct(product.id)">
+          <div class="product-overlay" *ngIf="product.isNew">
+            <span class="new-badge">New</span>
+          </div>
+          <button class="add-to-cart-plus" (click)="addToCart(product)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+          </button>
+        </div>
+        <div class="product-info">
+          <h3>{{ product.name }}</h3>
+          <div class="product-rating">
+            <span class="stars">
+              <span *ngFor="let star of getStars(product.id)" class="star" [class.filled]="star === '★'">
+                {{ star }}
+              </span>
+            </span>
+            <span class="rating-value">({{ getRatingCount(product.id) }})</span>
+          </div>
+          <p class="price">{{ product.price | currency:'ZAR':'R ':'1.2-2' }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="view-all">
+      <a routerLink="/products" class="btn-primary">View All Products</a>
+    </div>
+  </section>
+  
+</div>

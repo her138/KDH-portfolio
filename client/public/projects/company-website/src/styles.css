@@ -1,0 +1,313 @@
+/* ============================================
+   Global Styles - Elegant Minimalist Design
+   ============================================ */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #ffffff;
+  color: #2c2c2c;
+  line-height: 1.6;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* ============================================
+   Typography
+   ============================================ */
+
+h1, .serif-header {
+  font-family: 'Playfair Display', 'Times New Roman', serif;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+h1 {
+  font-size: 3rem;
+  font-weight: 400;
+  margin-bottom: 1rem;
+}
+
+h2 {
+  font-size: 2rem;
+  font-weight: 400;
+  margin-bottom: 2rem;
+  position: relative;
+  display: inline-block;
+}
+
+h2:after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  width: 50px;
+  height: 2px;
+  background: #5a3e5e;
+}
+
+h3 {
+  font-weight: 500;
+}
+
+p, .description, .full-description, .history p, .mission p,
+.about-content p, .blog-excerpt, .featured-excerpt,
+.contact-info p, .service-card p, .goal-card p, .value-card p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #666;
+  font-weight: 300;
+}
+
+small, .post-meta, .blog-meta, .product-rating, .rating-value,
+.team-title, .category, .product-category, .footer p, .footer-column ul li a {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: #999;
+}
+
+/* ============================================
+   Container
+   ============================================ */
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* ============================================
+   Buttons
+   ============================================ */
+
+.btn-primary {
+  background: #5a3e5e;
+  color: #fefaf5;
+  border: none;
+  padding: 12px 30px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  letter-spacing: 1px;
+  font-weight: 400;
+  text-transform: uppercase;
+  border-radius: 4px;
+}
+
+.btn-primary:hover {
+  background: #7a5a7e;
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: #5a3e5e;
+  border: 1px solid #5a3e5e;
+  padding: 12px 30px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  letter-spacing: 1px;
+  font-weight: 400;
+  text-transform: uppercase;
+  border-radius: 4px;
+}
+
+.btn-secondary:hover {
+  background: #5a3e5e;
+  color: #fefaf5;
+  transform: translateY(-2px);
+}
+
+/* ============================================
+   Scrollbar Styling
+   ============================================ */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #5a3e5e;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #7a5a7e;
+}
+
+/* ============================================
+   Footer Styles
+   ============================================ */
+
+.footer {
+  background: #ffffff;
+  margin-top: 60px;
+  border-top: 1px solid #f0e8e0;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 40px 40px;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 60px;
+}
+
+.footer-newsletter h3 {
+  font-size: 1.3rem;
+  margin-bottom: 15px;
+  color: #5a3e5e;
+  font-weight: 400;
+}
+
+.footer-newsletter p {
+  color: #666;
+  margin-bottom: 20px;
+  line-height: 1.6;
+  font-size: 0.9rem;
+}
+
+.newsletter-form {
+  display: flex;
+  gap: 10px;
+}
+.newsletter-form input {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid #e0d8d0;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-family: inherit;
+}
+.newsletter-form input:focus {
+  outline: none;
+  border-color: #5a3e5e;
+}
+.newsletter-form button {
+  padding: 12px 24px;
+  background: #5a3e5e;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s;
+  font-size: 0.9rem;
+}
+.newsletter-form button:hover:not(:disabled) {
+  background: #7a5a7e;
+}
+.newsletter-form button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.footer-links {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+}
+.footer-column h4 {
+  font-size: 1rem;
+  margin-bottom: 20px;
+  color: #5a3e5e;
+  font-weight: 500;
+}
+.footer-column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.footer-column ul li {
+  margin-bottom: 10px;
+}
+.footer-column ul li a {
+  color: #666;
+  text-decoration: none;
+  transition: color 0.3s;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: inline-block;
+}
+.footer-column ul li a:hover {
+  color: #5a3e5e;
+}
+.category-link {
+  cursor: pointer;
+}
+
+.footer-bottom {
+  text-align: center;
+  padding: 30px 20px;
+  border-top: 1px solid #f0e8e0;
+}
+.footer-bottom p {
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  color: #5a3e5e;
+  opacity: 0.7;
+  margin: 0;
+}
+
+/* Responsive Footer */
+@media (max-width: 768px) {
+  .footer-container {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding: 40px 20px;
+  }
+  .footer-links {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  .newsletter-form {
+    flex-direction: column;
+  }
+  .newsletter-form button {
+    width: 100%;
+  }
+  .footer-column {
+    text-align: center;
+  }
+}
+
+/* ============================================
+   Custom Notification Styles (Global)
+   ============================================ */
+
+.custom-notification {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  background-color: #5a3e5e;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  z-index: 1000;
+  animation: slideIn 0.3s ease;
+}
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}

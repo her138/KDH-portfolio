@@ -1,0 +1,380 @@
+.about-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Hero Section - Minimalist */
+.about-hero {
+  padding: 20px 0px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.about-hero h1 {
+  font-size: 2rem;
+  font-weight: 400;
+  margin-bottom: 0;
+  color: #2c2c2c;
+  font-family: 'Playfair Display', 'Times New Roman', serif;
+  letter-spacing: -0.3px;
+}
+
+.about-hero p {
+  color: #5a3e5e;
+  font-size: 1rem;
+  letter-spacing: 1px;
+  font-weight: 300;
+  margin-top: 12px;
+}
+
+.about-content {
+  padding: 0 40px 60px;
+}
+
+/* History Section */
+.history {
+  max-width: 800px;
+  margin: 0 auto 80px;
+  text-align: center;
+}
+
+.history h2 {
+  font-size: 1.5rem;
+  font-weight: 400;
+  margin-bottom: 25px;
+  color: #2c2c2c;
+  letter-spacing: -0.3px;
+}
+
+.history p {
+  color: #666;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-bottom: 20px;
+  font-weight: 300;
+}
+
+/* Section Headers - centered on desktop, left on mobile */
+.section-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.section-header h2 {
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: #2c2c2c;
+  letter-spacing: -0.3px;
+  display: inline-block;
+  position: relative;
+}
+
+.section-header h2:after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  width: 50px;
+  height: 2px;
+  background: #5a3e5e;
+}
+
+/* Values Section */
+.values {
+  margin-bottom: 80px;
+}
+
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px;
+}
+
+.value-card {
+  text-align: center;
+  padding: 20px;
+  transition: all 0.3s;
+}
+
+.value-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e0d8d0;
+  border-radius: 50%;
+  color: #5a3e5e;
+  transition: all 0.3s;
+}
+
+.value-card:hover .value-icon {
+  border-color: #5a3e5e;
+  transform: scale(1.05);
+}
+
+.value-card h3 {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 10px;
+  color: #2c2c2c;
+  letter-spacing: 0.5px;
+}
+
+.value-card p {
+  color: #999;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  font-weight: 300;
+}
+
+/* Goals Section - Similar to Values */
+.goals {
+  margin-bottom: 80px;
+}
+
+.goals-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px;
+}
+
+.goal-card {
+  text-align: center;
+  padding: 20px;
+  transition: all 0.3s;
+}
+
+.goal-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e0d8d0;
+  border-radius: 50%;
+  color: #5a3e5e;
+  transition: all 0.3s;
+}
+
+.goal-card:hover .goal-icon {
+  border-color: #5a3e5e;
+  transform: scale(1.05);
+}
+
+.goal-card h3 {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 10px;
+  color: #2c2c2c;
+  letter-spacing: 0.5px;
+}
+
+.goal-card p {
+  color: #999;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  font-weight: 300;
+}
+
+/* Team Section - Optimized Image Sizing */
+.team {
+  margin-bottom: 60px;
+}
+
+.team-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+  background: white;
+  border-radius: 12px;
+  padding: 40px;
+  border: 1px solid #f0e8e0;
+  transition: all 0.3s;
+}
+
+.team-layout:hover {
+  border-color: #5a3e5e;
+}
+
+.team-image {
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+  background: #f9f9f9;
+}
+
+.team-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s;
+}
+
+.team-layout:hover .team-image img {
+  transform: scale(1.03);
+}
+
+.team-info {
+  padding: 20px 0;
+}
+
+.team-info h3 {
+  font-size: 1.8rem;
+  font-weight: 400;
+  margin-bottom: 8px;
+  color: #2c2c2c;
+  font-family: 'Playfair Display', 'Times New Roman', serif;
+}
+
+.team-title {
+  color: #5a3e5e;
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+  font-weight: 400;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.team-bio {
+  color: #666;
+  font-size: 1rem;
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .values-grid,
+  .goals-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+  }
+  
+  .team-info h3 {
+    font-size: 1.6rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .about-hero {
+    padding: 30px 20px;
+    margin-bottom: 20px;
+  }
+  
+  .about-hero h1 {
+    font-size: 1.8rem;
+  }
+  
+  .about-hero p {
+    font-size: 0.9rem;
+  }
+  
+  .about-content {
+    padding: 0 20px 40px;
+  }
+  
+  .history {
+    margin-bottom: 50px;
+  }
+  
+  .history p {
+    font-size: 1rem;
+  }
+  
+  /* Section headers left-aligned on mobile */
+  .section-header {
+    text-align: left;
+    margin-bottom: 30px;
+  }
+  
+  .section-header h2:after {
+    left: 0;
+  }
+  
+  .values-grid,
+  .goals-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  
+  .team-layout {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding: 30px;
+    text-align: center;
+  }
+  
+  .team-info {
+    text-align: center;
+    padding: 0;
+  }
+  
+  .team-image {
+    max-width: 280px;
+    margin: 0 auto;
+    aspect-ratio: 1 / 1;
+  }
+  
+  .team-info h3 {
+    font-size: 1.5rem;
+  }
+  
+  .team-bio {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-hero h1 {
+    font-size: 1.6rem;
+  }
+  
+  .history h2,
+  .section-header h2 {
+    font-size: 1.3rem;
+  }
+  
+  .history p {
+    font-size: 0.95rem;
+  }
+  
+  .value-icon,
+  .goal-icon {
+    width: 56px;
+    height: 56px;
+  }
+  
+  .value-icon svg,
+  .goal-icon svg {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .team-layout {
+    padding: 20px;
+  }
+  
+  .team-image {
+    max-width: 240px;
+  }
+  
+  .team-info h3 {
+    font-size: 1.3rem;
+  }
+  
+  .team-title {
+    font-size: 0.8rem;
+    margin-bottom: 15px;
+  }
+  
+  .team-bio {
+    font-size: 0.9rem;
+  }
+}

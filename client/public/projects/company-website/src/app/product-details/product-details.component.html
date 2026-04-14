@@ -1,0 +1,66 @@
+<div class="custom-notification" *ngIf="showNotification">
+  {{ notificationMessage }}
+</div>
+
+
+<div *ngIf="product; else notFound" class="product-details-container">
+  <button class="back-btn" (click)="goBack()">← Back to Collection</button>
+
+  <div class="product-details">
+    <div class="product-image">
+      <img [src]="product.image" [alt]="product.name">
+      <div class="badge" *ngIf="product.isNew">
+        <span>New Arrival</span>
+      </div>
+    </div>
+
+    <div class="product-info">
+      <h1>{{ product.name }}</h1>
+      <p class="category">{{ product.category }}</p>
+
+      <!-- Rating Stars - Added below category -->
+      <div class="product-rating">
+        <span class="stars">
+          <span *ngFor="let star of getStars()" class="star" [class.filled]="star === '★'">
+            {{ star }}
+          </span>
+        </span>
+        <span class="rating-value">({{ getRatingCount() }})</span>
+      </div>
+
+      <p class="price">{{ product.price | currency:'ZAR':'R ':'1.2-2' }}</p>
+      <div class="description">
+        <h3>Description</h3>
+        <p class="full-description">{{ product.fullDescription }}</p>
+      </div>
+
+      <!-- Dropdown/Accordion Features Section -->
+      <div class="features-accordion">
+        <div class="accordion-header" (click)="toggleFeatures()">
+          <h3>Why You'll Love It</h3>
+          <svg class="accordion-icon" [class.rotated]="featuresOpen" width="20" height="20" viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </div>
+        <div class="accordion-content" [class.open]="featuresOpen">
+          <ul>
+            <li>Premium quality materials</li>
+            <li>Gentle on all hair types</li>
+            <li>Elegant design</li>
+            <li>Beautifully packaged</li>
+          </ul>
+        </div>
+      </div>
+
+      <button class="cart-btn" (click)="addToCart()">Add to Cart</button>
+    </div>
+  </div>
+</div>
+
+<ng-template #notFound>
+  <div class="not-found">
+    <h2>Product not found</h2>
+    <button class="back-btn" (click)="goBack()">Back to Collection</button>
+  </div>
+</ng-template>

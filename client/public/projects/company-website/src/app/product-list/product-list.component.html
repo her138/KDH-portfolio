@@ -1,0 +1,57 @@
+<div class="product-container">
+  <div class="custom-notification" *ngIf="showNotification">
+    {{ notificationMessage }}
+  </div>
+  <div class="product-header">
+    <h1>Our Product List</h1>
+    <p>Discover luxury hair care and satin essentials</p>
+  </div>
+
+  <div class="category-filters">
+    <button (click)="filterCategory('all')" [class.active]="selectedCategory === 'all'">All</button>
+    <button (click)="filterCategory('Satin Range')" [class.active]="selectedCategory === 'Satin Range'">Satin
+      Range</button>
+    <button (click)="filterCategory('Hair Care')" [class.active]="selectedCategory === 'Hair Care'">Hair Care</button>
+    <button (click)="filterCategory('Accessories')"
+      [class.active]="selectedCategory === 'Accessories'">Accessories</button>
+  </div>
+
+  <div class="products-grid">
+    <div *ngFor="let product of filteredProducts" class="product-card">
+      <div class="product-image-container">
+        <!-- Clickable image for view details -->
+        <img [src]="product.image" [alt]="product.name" class="product-image" (click)="viewDetails(product.id)">
+
+        <!-- New badge -->
+        <div class="product-overlay" *ngIf="product.isNew">
+          <span class="new-badge">New</span>
+        </div>
+
+        <!-- Add to Cart Plus Button -->
+        <button class="add-to-cart-plus" (click)="addToCart(product)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+        </button>
+      </div>
+
+      <div class="product-info">
+        <h3>{{ product.name }}</h3>
+
+        <!-- Rating Stars -->
+        <div class="product-rating">
+          <span class="stars">
+            <span *ngFor="let star of getStars(product.id)" class="star" [class.filled]="star === '★'">
+              {{ star }}
+            </span>
+          </span>
+          <span class="rating-value">({{ getRatingCount(product.id) }})</span>
+        </div>
+
+        <p class="price">{{ product.price | currency:'ZAR':'R ':'1.2-2' }}</p>
+      </div>
+    </div>
+  </div>
+</div>
