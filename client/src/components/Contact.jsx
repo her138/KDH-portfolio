@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { FiMail, FiPhone, FiMapPin, FiSend } from 'react-icons/fi';
 import GlassButton from './GlassButton';
+import emailjs from '@emailjs/browser';
+
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -21,10 +23,25 @@ const Contact = () => {
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setIsSubmitting(true);
 
+  const templateParams = {
+    firstName: formData.firstName,
+    lastName: formData.lastName,
+    email: formData.email,
+    message: formData.message,
+    to_email: 'webklinic2024@gmail.com'  // you can also set this in the template
+  };
+
+  try {
+    await emailjs.send(
+      'service_4us0hqj',      // from EmailJS dashboard
+      'template_wayrb75',     // from EmailJS dashboard
+      templateParams,
+      'Z0-wkBQdaNVHdhDaC'       // from EmailJS dashboard
+    );
     // Simulate API call
     setTimeout(() => {
       setSubmitStatus('success');
@@ -34,7 +51,12 @@ const Contact = () => {
       // Clear status after 5 seconds
       setTimeout(() => setSubmitStatus(null), 5000);
     }, 1500);
-  };
+  } catch (error) {
+    console.error('Error sending email:', error);
+    setSubmitStatus('error');
+    setIsSubmitting(false);
+  }
+};
 
   const contactInfo = [
     {
