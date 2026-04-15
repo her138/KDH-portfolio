@@ -5,6 +5,25 @@
 @tailwind components;
 @tailwind utilities;
 
+
+/* Custom properties for glass effects */
+:root {
+  --anim-hover-time: 400ms;
+  --anim-hover-ease: cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+@property --angle-1 {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: -75deg;
+}
+
+@property --angle-2 {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: -45deg;
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
@@ -504,17 +523,6 @@
 .dark .bg-\[\#FFFCF2\] { background-color: #1A1A1A !important; }
 .dark ::selection { @apply bg-[#EB5E28] text-[#0A0A0A]; }
 
-/* Responsive skill card adjustments */
-@media (max-width: 640px) {
-  .skill-card {
-    padding: 16px 12px;
-    min-height: 120px;
-  }
-  .skill-card svg {
-    width: 36px;
-    height: 36px;
-  }
-}
 
 /* Tech tag – matches hero button glass effect */
 .tech-tag {
