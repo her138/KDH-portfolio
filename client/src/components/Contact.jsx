@@ -32,7 +32,7 @@ const handleSubmit = async (e) => {
     lastName: formData.lastName,
     email: formData.email,
     message: formData.message,
-    to_email: 'webklinic2024@gmail.com'  // you can also set this in the template
+    to_email: 'hermanus138@gmail.com'  // you can also set this in the template
   };
 
   try {
@@ -62,14 +62,14 @@ const handleSubmit = async (e) => {
     {
       icon: FiMail,
       label: 'Email',
-      value: 'webklinic2024@gmail.com',
-      href: 'mailto:webklinic2024@gmail.com'
+      value: 'hermanus138@gmail.com',
+      href: 'mailto:hermanus138@gmail.com'
     },
     {
       icon: FiPhone,
       label: 'Phone',
-      value: '+27 73 9933 288',
-      href: 'tel:+27739933288'
+      value: '+27 67 116 6158',
+      href: 'tel:+27671166158'
     },
     {
       icon: FiMapPin,

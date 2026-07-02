@@ -62,7 +62,7 @@ const Header = () => {
     },
     { 
       icon: FaWhatsapp, 
-      href: 'https://wa.me/27739933288', 
+      href: 'https://wa.me/27671166158', 
       label: 'WhatsApp',
       color: '#25D366'
     },
@@ -217,8 +217,8 @@ const Header = () => {
 
                   {/* Quick Contact Info */}
                   <div className="mt-4 text-center text-xs text-[#403D39] dark:text-[#CCC5B9]">
-                    <p>webklinic2024@gmail.com</p>
-                    <p className="mt-1">+27 73 9933 288</p>
+                    <p>Hermanus138@gmail.com</p>
+                    <p className="mt-1">+27 67 116 6158</p>
                   </div>
                 </div>
               </div>

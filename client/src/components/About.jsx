@@ -48,10 +48,10 @@ const About = () => {
             >
               <div className="space-y-6 text-[#403D39] dark:text-[#B0B0B0] text-lg">
                 <p>
-                  Damion Hermanus is a front-end developer currently pursuing an Advanced Diploma in
-                  ICT Multimedia at CPUT (2021–present). He specializes in front-end development,
-                  building responsive websites, ensuring functionality, and fixing code bugs to create
-                  smooth and reliable user experiences.
+                  I am a front-end developer currently pursuing an Advanced Diploma in ICT Multimedia
+                   at CPUT. I specialize in building responsive websites, improving functionality, 
+                   and fixing code issues to create smooth, reliable, and user-friendly digital 
+                   experiences.
                 </p>
                 <p>
                   My mission is to help small businesses grow within their sectors by improving their online presence

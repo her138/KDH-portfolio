@@ -115,8 +115,8 @@ const Footer = () => {
         {/* Quick Contact */}
         <div className="mt-8 text-center">
           <p className="text-sm text-[#403D39]">
-            <a href="mailto:webklinic2024@gmail.com" className="hover:text-[#EB5E28] transition-colors">
-              webklinic2024@gmail.com
+            <a href="mailto:hermanus138@gmail.com" className="hover:text-[#EB5E28] transition-colors">
+              hermanus138@gmail.com
             </a>
           </p>
         </div>
