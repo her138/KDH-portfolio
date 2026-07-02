@@ -97,7 +97,7 @@ const Header = () => {
             whileHover={{ scale: 1.05 }}
             className="text-2xl font-medium font-playfair text-[#252422] dark:text-[#FFFCF2]"
           >
-            MasterCraft
+            MasterCraft by Kyle
           </motion.a>
 
           {/* Desktop Navigation */}

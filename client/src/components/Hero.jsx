@@ -38,7 +38,7 @@ const Hero = () => {
             transition={{ delay: 0.3 }}
             className="mb-6"
           >
-            MasterCraft
+            MasterCraft by Kyle
           </motion.h1>
 
           <motion.p

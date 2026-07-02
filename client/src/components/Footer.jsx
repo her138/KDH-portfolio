@@ -20,13 +20,13 @@ const Footer = () => {
     },
     { 
       icon: FaWhatsapp, 
-      href: 'https://wa.me/27739933288', 
+      href: 'https://wa.me/27671166158', 
       label: 'WhatsApp',
       color: '#25D366'
     },
     { 
       icon: FaInstagram, 
-      href: 'https://instagram.com/MasterCraftSites', 
+      href: 'https://instagram.com/kyle_the_dawg', 
       label: 'Instagram',
       color: '#E4405F'
     },
