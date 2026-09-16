@@ -962,3 +962,21 @@
     ),
     linear-gradient(180deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2));
 }
+/* Fully visible project card images/logos */
+
+.project-image {
+  object-fit: contain;
+  object-position: center;
+  background: rgba(255, 255, 255, 0.42);
+  padding: 22px;
+  box-sizing: border-box;
+}
+
+.dark .project-image {
+  background: rgba(255, 255, 255, 0.04);
+}
+.projects-view-more {
+  display: flex;
+  justify-content: center;
+  margin-top: 48px;
+}
