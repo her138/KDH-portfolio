@@ -111,16 +111,7 @@ const Header = () => {
     >
       <div className="container-custom h-full">
         <div className="flex items-center justify-between h-full">
-<<<<<<< HEAD
           {/* Logo */}
-          <motion.a
-            href="#home"
-            whileHover={{ scale: 1.05 }}
-            className="text-2xl font-medium font-playfair text-[#252422] dark:text-[#FFFCF2]"
-          >
-            MasterCraft by Kyle
-          </motion.a>
-=======
           <motion.div whileHover={{ scale: 1.05 }}>
             <Link
               to="/#home"
@@ -129,7 +120,6 @@ const Header = () => {
               MasterCraft
             </Link>
           </motion.div>
->>>>>>> d726e71 (latest updates)
 
           <nav className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
