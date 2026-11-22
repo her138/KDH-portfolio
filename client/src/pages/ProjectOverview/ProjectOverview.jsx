@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import {
   FiArrowLeft,
@@ -11,6 +11,7 @@ import {
   FiCheckCircle,
 } from 'react-icons/fi';
 import GlassButton from '../../components/GlassButton';
+import { supabase } from '../../lib/supabase';
 import './ProjectOverview.css';
 
 const projectOverviews = {
@@ -404,17 +405,95 @@ sarajane: {
   },
 };
 
+const projectTypeLabels = {
+  web_app: 'Interactive Web Application',
+  website: 'Website',
+  ui_design: 'UI/UX Design',
+  ui_ux: 'UI/UX Design',
+  logo: 'Logo Design & Brand Identity',
+};
+
 const ProjectOverview = () => {
   const { slug } = useParams();
-  const project = projectOverviews[slug];
+  const [databaseProject, setDatabaseProject] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
-  if (!project) {
+  useEffect(() => {
+    let mounted = true;
+    setLoading(true);
+    setError('');
+    setDatabaseProject(null);
+
+    const loadProject = async () => {
+      const { data, error: fetchError } = await supabase
+        .from('projects')
+        .select(
+          'id, slug, title, description, technologies, image_url, live_url, project_type'
+        )
+        .eq('slug', slug)
+        .eq('is_published', true)
+        .maybeSingle();
+
+      if (!mounted) return;
+
+      if (fetchError) {
+        console.error('Unable to load project overview:', fetchError);
+        setError('Unable to load this project. Please try again.');
+      } else {
+        setDatabaseProject(data);
+      }
+      setLoading(false);
+    };
+
+    loadProject();
+    return () => {
+      mounted = false;
+    };
+  }, [slug]);
+
+  // The detailed case studies remain in this file. Their visibility and
+  // editable project metadata are always controlled by Supabase.
+  const caseStudy = Object.hasOwn(projectOverviews, slug)
+    ? projectOverviews[slug]
+    : null;
+  const hasDetailedCaseStudy = Boolean(caseStudy);
+
+  const project = databaseProject
+    ? {
+        ...(caseStudy ?? {}),
+        title: databaseProject.title,
+        category:
+          projectTypeLabels[databaseProject.project_type] ?? 'Project',
+        image: databaseProject.image_url ?? '',
+        liveUrl: databaseProject.live_url ?? '',
+        tools: Array.isArray(databaseProject.technologies)
+          ? databaseProject.technologies
+          : [],
+        overview: databaseProject.description ?? '',
+      }
+    : null;
+
+  if (loading) {
     return (
       <main className="project-overview-page">
         <section className="overview-not-found">
-          <p className="overview-kicker">Project not found</p>
-          <h1>This project overview does not exist.</h1>
+          <p role="status">Loading project...</p>
+        </section>
+      </main>
+    );
+  }
 
+  if (error || !project) {
+    return (
+      <main className="project-overview-page">
+        <section className="overview-not-found">
+          <p className="overview-kicker">
+            {error ? 'Unable to load project' : 'Project not found'}
+          </p>
+          <h1>
+            {error || 'This project is unavailable or unpublished.'}
+          </h1>
           <Link to="/#projects" className="overview-back-link">
             <FiArrowLeft />
             Back to projects
@@ -455,7 +534,11 @@ const ProjectOverview = () => {
             </div>
 
             <div className="overview-image-wrap">
-              <img src={project.image} alt={project.title} />
+              {project.image ? (
+                <img src={project.image} alt={project.title} />
+              ) : (
+                <p>Project preview coming soon.</p>
+              )}
             </div>
           </div>
         </div>
@@ -507,6 +590,7 @@ const ProjectOverview = () => {
         </div>
 
         <div className="overview-container">
+          {hasDetailedCaseStudy && (
           <section className="case-study-section">
             <div className="case-study-heading">
               <span className="case-study-kicker">UX / UI PROCESS</span>
@@ -543,6 +627,7 @@ const ProjectOverview = () => {
               />
             </div>
           </section>
+          )}
 
           <VisualCaseStudySection
             kicker="EARLY DESIGN"

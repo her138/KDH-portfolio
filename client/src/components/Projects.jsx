@@ -1,105 +1,10 @@
 // src/components/Projects.jsx
-
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { supabase } from '../lib/supabase';
 import { useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { FiArrowRight, FiEye, FiX } from 'react-icons/fi';
 import GlassButton from './GlassButton';
-
-const projectsData = [
-  {
-    _id: '1',
-    title: 'Drum Kit',
-    software: ['JavaScript', 'CSS', 'HTML'],
-    description:
-      'An interactive drum kit web application that allows users to play different drum sounds using keyboard keys or mouse clicks.',
-    image: '/projects/Drum_Kit/drum-kit-image.png',
-    projectUrl: '/projects/Drum_Kit/Drum_Kit (2)/index.html',
-    overviewUrl: '/project-overview/drum-kit',
-    projectType: 'web_app',
-    github: 'https://github.com',
-    featured: true,
-  },
-  {
-    _id: '2',
-    title: 'Gunk Juice Logo',
-    software: ['Adobe Illustrator', 'Photoshop'],
-    description:
-      'Modern logo design for an energy drink brand, focusing on bold typography and strong visual identity.',
-    image: '/projects/Gunk/gunk-logo.png',
-    projectUrl: '#',
-    overviewUrl: '/project-overview/gunk-juice-logo',
-    projectType: 'logo',
-    github: null,
-    featured: false,
-  },
-  {
-    _id: '3',
-    title: 'AR AutoWorks Website',
-    software: ['HTML', 'CSS', 'JavaScript', 'Figma'],
-    description:
-      'Complete website redesign for an auto repair shop featuring service information, online booking and a clean responsive layout.',
-    image: '/images/ar-logo.png',
-    projectUrl: '/projects/AR AutoWorks Cpt/index.html',
-    overviewUrl: '/project-overview/ar-autoworks',
-    projectType: 'website',
-    github: 'https://github.com',
-    featured: true,
-  },
-  {
-    _id: '4',
-    title: 'SaraJane – Hair Care Brand',
-    software: ['Angular', 'TypeScript', 'CSS', 'HTML'],
-    description:
-      'A complete brand website for a luxury hair care and satin essentials company featuring product sections, brand content and responsive design.',
-    image: '/projects/company-website/public/images/sj-logo.jpg',
-    projectUrl: '/projects/company-website/index.html',
-    overviewUrl: '/project-overview/sarajane',
-    projectType: 'website',
-    github: 'https://github.com',
-    featured: true,
-  },
-  {
-    _id: '5',
-    title: 'Joe-Man Sweep Cleaning',
-    software: ['Angular', 'TypeScript', 'CSS', 'HTML'],
-    description:
-      'A responsive service-business website for a Cape Town chimney cleaning and fireplace installation brand with booking-focused UX.',
-    image: '/projects/joe-man-sweep/frontend/public/logo.png',
-    projectUrl: '/projects/joe-man-sweeps/index.html',
-    overviewUrl: '/project-overview/joe-man-sweep',
-    projectType: 'website',
-    github: 'https://github.com',
-    featured: true,
-  },
-  {
-    _id: '6',
-    title: 'KillyDid',
-    software: ['React', 'JavaScript', 'CSS', 'Figma'],
-    description:
-      'A full website redesign for a creative photography brand focused on cinematic visuals, clean navigation, responsive gallery layouts and a stronger booking experience.',
-    image: '/projects/killydid/killydidshootit-preview.png',
-    projectUrl: '/projects/KillyDid/DantePortFolio-main/build/404.html',
-    overviewUrl: '/project-overview/killydid',
-    projectType: 'ui_design',
-    github: 'https://github.com',
-    featured: true,
-  },
-  {
-    _id: '7',
-    title: 'Blackheath Police Rugby FC Logo',
-    software: ['Adobe Illustrator', 'Photoshop', 'Figma'],
-    description:
-      'A sports logo redesign for Blackheath Police Rugby FC, focused on creating a bold rugby club identity with strong badge styling, clean typography and a professional team look.',
-    image:
-      '/projects/blackheath-police-rugby-fc/blackheath-police-rugby-logo.png',
-    projectUrl: '#',
-    overviewUrl: '',
-    projectType: 'logo',
-    github: null,
-    featured: true,
-  },
-];
 
 const filterTypes = [
   { label: 'All', value: 'all' },
@@ -114,6 +19,68 @@ const Projects = () => {
 
   const [selectedProject, setSelectedProject] = useState(null);
   const [filter, setFilter] = useState('all');
+  const [projectsData, setProjectsData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState('');
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadProjects() {
+      const { data, error } = await supabase
+        .from('projects')
+        .select('id, title, slug, description, technologies, image_url, github_url, live_url, overview_url, project_type, featured, sort_order, created_at')
+        .eq('is_published', true)
+        .order('sort_order', { ascending: true })
+        .order('created_at', { ascending: false });
+
+      if (!active) return;
+
+      if (error) {
+        console.error('Homepage projects:', error);
+        setLoadError(error.message);
+        setProjectsData([]);
+      } else {
+        const updated = (data ?? []).map((project) => ({
+          _id: project.id,
+          title: project.title,
+          description: project.description ?? '',
+          software: Array.isArray(project.technologies)
+            ? project.technologies : [],
+          image: project.image_url ?? '',
+          projectUrl: project.live_url ?? '',
+          overviewUrl: project.overview_url ?? '',
+          projectType: project.project_type === 'ui_ux'
+            ? 'ui_design' : (project.project_type ?? 'website'),
+          github: project.github_url ?? '',
+          featured: Boolean(project.featured),
+        }));
+
+        setProjectsData(updated);
+        setSelectedProject((current) =>
+          current ? (updated.find((p) => p._id === current._id) ?? null) : null
+        );
+        setLoadError('');
+      }
+      setIsLoading(false);
+    }
+
+    const onFocus = () => { void loadProjects(); };
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') void loadProjects();
+    };
+
+    void loadProjects();
+    window.addEventListener('focus', onFocus);
+    document.addEventListener('visibilitychange', onVisible);
+
+    return () => {
+      active = false;
+      window.removeEventListener('focus', onFocus);
+      document.removeEventListener('visibilitychange', onVisible);
+    };
+  }, []);
+
 
   const filteredProjects =
     filter === 'all'
@@ -164,6 +131,12 @@ const Projects = () => {
               </GlassButton>
             ))}
           </div>
+
+          {isLoading && <p role="status" className="text-center mb-6">Loading projects...</p>}
+          {loadError && <p role="alert" className="text-center mb-6 text-red-500">Could not load projects: {loadError}</p>}
+          {!isLoading && !loadError && projectsData.length === 0 && (
+            <p className="text-center mb-6">No published projects yet.</p>
+          )}
 
           <div className="grid-system">
             {displayedProjects.map((project, index) => (

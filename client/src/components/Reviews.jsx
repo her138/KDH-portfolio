@@ -4,38 +4,57 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { FiChevronLeft, FiChevronRight, FiStar } from 'react-icons/fi';
 import GlassButton from './GlassButton';
+import { supabase } from '../lib/supabase';
 
 const Reviews = () => {
   const [reviews, setReviews] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  // Keep the existing testimonial carousel styling. Only the source changes.
   useEffect(() => {
-    setReviews([
-      {
-        _id: '1',
-        name: 'SaraJane',
-        rating: 4,
-        comment:
-          'Put in great amounts of effort. Delivered high-quality work ahead of schedule.',
-        role: 'CEO, SaraJane Hair Care',
-      },
-      {
-        _id: '2',
-        name: 'Bosiris Kypophis',
-        rating: 5,
-        comment:
-          'Very patient and always hard working. Excellent communication and technical skills.',
-        role: 'Founder, AR AutoWorks',
-      },
-      {
-        _id: '3',
-        name: 'Michael Chen',
-        rating: 5,
-        comment:
-          'Exceptional development skills. Transformed our outdated website into a modern, responsive platform.',
-        role: 'CTO, SecureCorp Inc',
-      },
-    ]);
+    let active = true;
+
+    async function loadReviews() {
+      const { data, error } = await supabase
+        .from('client_reviews')
+        .select('id, name, role, comment, rating, sort_order')
+        .eq('is_published', true)
+        .eq('permission_confirmed', true)
+        .order('sort_order', { ascending: true })
+        .order('created_at', { ascending: false });
+
+      if (!active) return;
+
+      if (error) {
+        console.error('Could not load client reviews:', error);
+        setReviews([]);
+        return;
+      }
+
+      const nextReviews = (data ?? []).map((review) => ({
+        ...review,
+        _id: review.id,
+      }));
+      setReviews(nextReviews);
+      setCurrentIndex((previous) =>
+        previous < nextReviews.length ? previous : 0
+      );
+    }
+
+    const onFocus = () => { void loadReviews(); };
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') void loadReviews();
+    };
+
+    void loadReviews();
+    window.addEventListener('focus', onFocus);
+    document.addEventListener('visibilitychange', onVisible);
+
+    return () => {
+      active = false;
+      window.removeEventListener('focus', onFocus);
+      document.removeEventListener('visibilitychange', onVisible);
+    };
   }, []);
 
   const nextReview = useCallback(() => {
@@ -45,6 +64,8 @@ const Reviews = () => {
   const prevReview = useCallback(() => {
     setCurrentIndex((prev) => (prev - 1 + reviews.length) % reviews.length);
   }, [reviews.length]);
+
+  const activeReview = reviews[currentIndex] ?? reviews[0];
 
   const renderStars = (rating) => {
     return Array.from({ length: 5 }, (_, index) => {
@@ -121,19 +142,19 @@ const Reviews = () => {
               >
                 <div className="flex flex-col items-center justify-center space-y-4">
                   <p className="text-[#252422] dark:text-[#EDEDED] text-lg italic">
-                    “{reviews[currentIndex].comment}”
+                    “{activeReview.comment}”
                   </p>
 
                   <h3 className="text-2xl font-playfair font-semibold text-[#252422] dark:text-[#EDEDED]">
-                    {reviews[currentIndex].name}
+                    {activeReview.name}
                   </h3>
 
                   <p className="text-[#403D39] dark:text-[#B0B0B0]">
-                    {reviews[currentIndex].role}
+                    {activeReview.role}
                   </p>
 
                   <div className="flex gap-1 justify-center">
-                    {renderStars(reviews[currentIndex].rating)}
+                    {renderStars(activeReview.rating)}
                   </div>
                 </div>
               </motion.div>

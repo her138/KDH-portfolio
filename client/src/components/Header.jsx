@@ -1,6 +1,6 @@
 // src/components/Header.jsx
 
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
@@ -24,6 +24,7 @@ const Header = () => {
     { label: 'About', path: '/#about' },
     { label: 'Skills', path: '/#skills' },
     { label: 'Projects', path: '/#projects' },
+    { label: 'Request Project', path: '/request-project' },
     { label: 'Contact', path: '/#contact' },
   ];
 

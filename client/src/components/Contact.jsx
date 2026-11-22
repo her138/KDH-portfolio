@@ -1,10 +1,10 @@
 // Updated src/components/Contact.jsx
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { FiMail, FiPhone, FiMapPin, FiSend } from 'react-icons/fi';
 import GlassButton from './GlassButton';
-import emailjs from '@emailjs/browser';
-
+import { Turnstile } from '@marsidev/react-turnstile';
+import { supabase } from '../lib/supabase';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -23,40 +23,82 @@ const Contact = () => {
     });
   };
 
+
 const handleSubmit = async (e) => {
   e.preventDefault();
+
+  if (isSubmitting) return;
+
+  setSubmitStatus(null);
+  setErrorMessage('');
+
+  if (!captchaToken) {
+    setSubmitStatus('error');
+    setErrorMessage('Please complete security verification.');
+    return;
+  }
+
   setIsSubmitting(true);
 
-  const templateParams = {
-    firstName: formData.firstName,
-    lastName: formData.lastName,
-    email: formData.email,
-    message: formData.message,
-    to_email: 'hermanus138@gmail.com'  // you can also set this in the template
-  };
-
   try {
-    await emailjs.send(
-      'service_4us0hqj',      // from EmailJS dashboard
-      'template_wayrb75',     // from EmailJS dashboard
-      templateParams,
-      'Z0-wkBQdaNVHdhDaC'       // from EmailJS dashboard
+    const { data, error } = await supabase.functions.invoke(
+      'submit-contact',
+      {
+        body: {
+          ...formData,
+          website,
+          turnstileToken: captchaToken
+        }
+      }
     );
-    // Simulate API call
-    setTimeout(() => {
-      setSubmitStatus('success');
-      setIsSubmitting(false);
-      setFormData({ firstName: '', lastName: '', email: '', message: '' });
 
-      // Clear status after 5 seconds
-      setTimeout(() => setSubmitStatus(null), 5000);
-    }, 1500);
+    if (error) {
+      let message = 'Unable to send your message.';
+
+      try {
+        const details = await error.context?.json();
+        message = details?.error || message;
+      } catch {
+        message = error.message || message;
+      }
+
+      throw new Error(message);
+    }
+
+    if (data?.success !== true) {
+      throw new Error('Message was not confirmed as saved.');
+    }
+
+    setSubmitStatus('success');
+
+    setFormData({
+      firstName: '',
+      lastName: '',
+      email: '',
+      message: ''
+    });
+
+    setWebsite('');
   } catch (error) {
-    console.error('Error sending email:', error);
+    console.error('Contact form error:', error);
+    setErrorMessage(
+      error.message || 'Please try again later.'
+    );
     setSubmitStatus('error');
+  } finally {
     setIsSubmitting(false);
+    setCaptchaToken('');
+    turnstileRef.current?.reset();
   }
 };
+;
+const [captchaToken, setCaptchaToken] = useState('');
+const [website, setWebsite] = useState('');
+const [errorMessage, setErrorMessage] = useState('');
+const turnstileRef = useRef(null);
+
+const turnstileSiteKey =
+  import.meta.env.VITE_TURNSTILE_SITE_KEY;
 
   const contactInfo = [
     {
@@ -144,9 +186,46 @@ const handleSubmit = async (e) => {
                   className="form-input resize-none"
                 />
 
+{/* Hidden spam trap */}
+<div
+  aria-hidden="true"
+  className="absolute -left-[10000px]"
+>
+  <label htmlFor="contact-website">
+    Website
+  </label>
+  <input
+    id="contact-website"
+    type="text"
+    value={website}
+    onChange={(e) => setWebsite(e.target.value)}
+    tabIndex={-1}
+    autoComplete="off"
+  />
+</div>
+
+{/* Security verification */}
+{turnstileSiteKey ? (
+  <Turnstile
+    ref={turnstileRef}
+    siteKey={turnstileSiteKey}
+    options={{
+      theme: 'auto',
+      action: 'contact'
+    }}
+    onSuccess={(token) => setCaptchaToken(token)}
+    onExpire={() => setCaptchaToken('')}
+    onError={() => setCaptchaToken('')}
+  />
+) : (
+  <p className="text-red-500">
+    Contact form verification is not configured.
+  </p>
+)}
+
                 <button
                   type="submit"
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || !captchaToken || !turnstileSiteKey}
                   className="submit-button"
                 >
                   <span className="button-content">
@@ -163,6 +242,13 @@ const handleSubmit = async (e) => {
                   >
                     Message sent successfully!
                   </motion.p>
+
+                )}
+
+                {submitStatus === 'error' && (
+                  <p role="alert" className="text-center text-red-500">
+                    {errorMessage}
+                  </p>
                 )}
               </form>
             </motion.div>

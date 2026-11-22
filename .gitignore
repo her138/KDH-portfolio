@@ -10,8 +10,11 @@ client/dist/
 server/dist/
 
 # Environment variables
+.vercel/
 .env
 .env.local
+.env.*.local
+.angular/cache/
 
 # Logs
 *.log

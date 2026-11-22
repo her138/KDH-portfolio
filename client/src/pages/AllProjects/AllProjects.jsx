@@ -1,103 +1,14 @@
 // src/pages/AllProjects/AllProjects.jsx
-
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   FiArrowLeft,
   FiChevronLeft,
   FiChevronRight,
-  FiExternalLink,
-  FiEye,
 } from 'react-icons/fi';
 import GlassButton from '../../components/GlassButton';
+import { supabase } from '../../lib/supabase';
 import './AllProjects.css';
-
-const allProjects = [
-  {
-    _id: '1',
-    title: 'Drum Kit',
-    category: 'web_app',
-    categoryLabel: 'Web App',
-    software: ['JavaScript', 'CSS', 'HTML'],
-    description:
-      'An interactive drum kit web application that allows users to play different drum sounds using keyboard keys or mouse clicks.',
-    image: '/projects/Drum_Kit/drum-kit-image.png',
-    projectUrl: '/projects/Drum_Kit/Drum_Kit (2)/index.html',
-    overviewUrl: '/project-overview/drum-kit',
-  },
-  {
-    _id: '2',
-    title: 'AR AutoWorks Website',
-    category: 'website',
-    categoryLabel: 'Website',
-    software: ['HTML', 'CSS', 'JavaScript', 'Figma'],
-    description:
-      'A complete website redesign for an auto repair business featuring service information, booking-focused sections and a clean responsive layout.',
-    image: '/images/ar-logo.png',
-    projectUrl: '/projects/AR AutoWorks Cpt/index.html',
-    overviewUrl: '/project-overview/ar-autoworks',
-  },
-  {
-    _id: '3',
-    title: 'SaraJane – Hair Care Brand',
-    category: 'website',
-    categoryLabel: 'Website',
-    software: ['Angular', 'TypeScript', 'CSS', 'HTML'],
-    description:
-      'A complete beauty and hair care brand website featuring product categories, elegant brand styling and responsive product-focused sections.',
-    image: '/projects/company-website/public/images/sj-logo.jpg',
-    projectUrl: '/projects/company-website/index.html',
-    overviewUrl: '/project-overview/sarajane',
-  },
-  {
-    _id: '4',
-    title: 'Joe-Man Sweep Cleaning',
-    category: 'website',
-    categoryLabel: 'Website',
-    software: ['Angular', 'TypeScript', 'CSS', 'HTML'],
-    description:
-      'A responsive service-business website for a Cape Town chimney cleaning and fireplace installation brand with a booking-focused user journey.',
-    image: '/projects/joe-man-sweep/frontend/public/logo.png',
-    projectUrl: '/projects/joe-man-sweeps/index.html',
-    overviewUrl: '/project-overview/joe-man-sweep',
-  },
-  {
-    _id: '5',
-    title: 'KillyDid',
-    category: 'ui_ux',
-    categoryLabel: 'UI/UX',
-    software: ['React', 'JavaScript', 'CSS', 'Figma'],
-    description:
-      'A website redesign for a creative photography brand focused on cinematic visuals, clean navigation, responsive gallery layouts and a stronger booking experience.',
-    image: '/projects/killydid/killydidshootit-preview.png',
-    projectUrl: '/projects/KillyDid/DantePortFolio-main/src/index.html',
-    overviewUrl: '/project-overview/killydid',
-  },
-  {
-    _id: '6',
-    title: 'Gunk Juice Logo',
-    category: 'logo',
-    categoryLabel: 'Logo Design',
-    software: ['Adobe Illustrator', 'Photoshop'],
-    description:
-      'A bold logo design project for an energy drink concept, focused on strong typography, brand personality and digital-ready logo presentation.',
-    image: '/projects/Gunk/gunk-logo.png',
-    projectUrl: '#',
-    overviewUrl: '/project-overview/gunk-juice-logo',
-  },
-  {
-    _id: '7',
-    title: 'Blackheath Rugby FC Club Logo',
-    category: 'logo',
-    categoryLabel: 'Logo Design',
-    software: ['Adobe Illustrator', 'Photoshop', 'Figma'],
-    description:
-      'A sports logo design project for Blackheath Rugby FC, focused on creating a strong club identity, bold badge styling and a professional rugby brand look.',
-    image: '/projects/blackheath-rugby-fc/blackheath-logo.png',
-    projectUrl: '#',
-    overviewUrl: '',
-  },
-];
 
 const projectCategories = [
   {
@@ -114,7 +25,7 @@ const projectCategories = [
   },
   {
     title: 'UI/UX',
-    value: 'ui_ux',
+    value: 'ui_design',
     intro:
       'Design-focused projects that show layout planning, redesign thinking, user flow and visual direction.',
   },
@@ -126,7 +37,72 @@ const projectCategories = [
   },
 ];
 
+const categoryLabels = {
+  web_app: 'Web App',
+  website: 'Website',
+  ui_design: 'UI/UX',
+  logo: 'Logo Design',
+};
+
+// Support any older records that were saved with the UI/UX category name.
+const normalizeCategory = (type) =>
+  type === 'ui_ux' ? 'ui_design' : type;
+
 const AllProjects = () => {
+  const [allProjects, setAllProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    let mounted = true;
+
+    const loadProjects = async () => {
+      const { data, error: fetchError } = await supabase
+        .from('projects')
+        .select(
+          'id, slug, title, description, technologies, image_url, live_url, overview_url, project_type, sort_order, created_at'
+        )
+        .eq('is_published', true)
+        .order('sort_order', { ascending: true })
+        .order('created_at', { ascending: false });
+
+      if (!mounted) return;
+
+      if (fetchError) {
+        console.error('Unable to load projects:', fetchError);
+        setError('Projects could not be loaded. Please refresh the page.');
+        setAllProjects([]);
+      } else {
+        setError('');
+        setAllProjects(
+          (data ?? []).map((item) => {
+            const category = normalizeCategory(item.project_type);
+            return {
+              _id: item.id,
+              slug: item.slug,
+              title: item.title,
+              category,
+              categoryLabel: categoryLabels[category] ?? 'Project',
+              software: Array.isArray(item.technologies)
+                ? item.technologies
+                : [],
+              description: item.description ?? '',
+              image: item.image_url ?? '',
+              projectUrl: item.live_url ?? '',
+              overviewUrl: item.overview_url ?? '',
+            };
+          })
+        );
+      }
+      setLoading(false);
+    };
+
+    loadProjects();
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
   return (
     <main className="all-projects-page">
       <section className="all-projects-hero">
@@ -139,9 +115,7 @@ const AllProjects = () => {
           <span className="section-title block text-center mb-4">
             PROJECT ARCHIVE
           </span>
-
           <h1>All Projects</h1>
-
           <p>
             A full collection of web apps, websites, UI/UX redesigns and logo
             projects, organised by project type.
@@ -151,7 +125,12 @@ const AllProjects = () => {
 
       <section className="all-projects-categories">
         <div className="container-custom">
-          {projectCategories.map((category) => {
+          {loading && <p role="status">Loading projects...</p>}
+          {!loading && error && <p role="alert">{error}</p>}
+          {!loading && !error && allProjects.length === 0 && (
+            <p>No published projects are available yet.</p>
+          )}
+          {!loading && !error && projectCategories.map((category) => {
             const projects = allProjects.filter(
               (project) => project.category === category.value
             );
@@ -175,32 +154,35 @@ const ProjectCategoryCarousel = ({ title, intro, projects }) => {
   const navigate = useNavigate();
   const [activeIndex, setActiveIndex] = useState(0);
 
-  if (!projects || projects.length === 0) {
-    return null;
-  }
+  // Keep index valid if the list changes after another fetch.
+  const safeIndex = Math.min(activeIndex, Math.max(projects.length - 1, 0));
+  const activeProject = projects[safeIndex];
 
-  const activeProject = projects[activeIndex];
+  if (!activeProject) return null;
 
   const goToPrevious = () => {
-    setActiveIndex((prev) =>
-      prev === 0 ? projects.length - 1 : prev - 1
+    setActiveIndex((previous) =>
+      previous <= 0 ? projects.length - 1 : previous - 1
     );
   };
 
   const goToNext = () => {
-    setActiveIndex((prev) =>
-      prev === projects.length - 1 ? 0 : prev + 1
+    setActiveIndex((previous) =>
+      previous >= projects.length - 1 ? 0 : previous + 1
     );
   };
 
   const openProject = (url) => {
     if (!url || url === '#') return;
+    if (!url.startsWith('/') && !url.startsWith('https://')) return;
+    if (url.startsWith('//')) return;
     window.open(url, '_blank', 'noopener,noreferrer');
   };
 
-  const openOverview = (url) => {
-    if (!url || url === '#') return;
-    navigate(url);
+  const openOverview = (project) => {
+    if (!project.overviewUrl || project.overviewUrl === '#') return;
+    // Navigate using the database slug, never a stale hardcoded URL.
+    navigate(`/project-overview/${encodeURIComponent(project.slug)}`);
     window.scrollTo(0, 0);
   };
 
@@ -211,7 +193,6 @@ const ProjectCategoryCarousel = ({ title, intro, projects }) => {
           <p className="project-category-kicker">Category</p>
           <h2>{title}</h2>
         </div>
-
         <p>{intro}</p>
       </div>
 
@@ -227,42 +208,55 @@ const ProjectCategoryCarousel = ({ title, intro, projects }) => {
 
         <div className="project-carousel-layout">
           <div className="project-carousel-image">
-            <img src={activeProject.image} alt={activeProject.title} />
+            {activeProject.image ? (
+              <img
+                src={activeProject.image}
+                alt={activeProject.title}
+                loading="lazy"
+                decoding="async"
+              />
+            ) : (
+              <div role="img" aria-label="Project image not available">
+                Preview coming soon
+              </div>
+            )}
           </div>
 
           <div className="project-carousel-content">
-            <p className="project-type-label">{activeProject.categoryLabel}</p>
-
+            <p className="project-type-label">
+              {activeProject.categoryLabel}
+            </p>
             <h3>{activeProject.title}</h3>
-
             <p className="project-carousel-description">
               {activeProject.description}
             </p>
 
             <div className="project-carousel-tags">
-              {activeProject.software.map((tool) => (
-                <span key={tool} className="tech-tag">
+              {activeProject.software.map((tool, index) => (
+                <span key={`${tool}-${index}`} className="tech-tag">
                   {tool}
                 </span>
               ))}
             </div>
 
             <div className="project-carousel-actions">
-              {activeProject.projectUrl && activeProject.projectUrl !== '#' && (
-                <GlassButton
-                  onClick={() => openProject(activeProject.projectUrl)}
-                >
-                  View Project
-                </GlassButton>
-              )}
+              {activeProject.projectUrl &&
+                activeProject.projectUrl !== '#' && (
+                  <GlassButton
+                    onClick={() => openProject(activeProject.projectUrl)}
+                  >
+                    View Project
+                  </GlassButton>
+                )}
 
-              {activeProject.overviewUrl && activeProject.overviewUrl !== '#' && (
-                <GlassButton
-                  onClick={() => openOverview(activeProject.overviewUrl)}
-                >
-                  Project Overview
-                </GlassButton>
-              )}
+              {activeProject.overviewUrl &&
+                activeProject.overviewUrl !== '#' && (
+                  <GlassButton
+                    onClick={() => openOverview(activeProject)}
+                  >
+                    Project Overview
+                  </GlassButton>
+                )}
             </div>
           </div>
         </div>
@@ -284,7 +278,7 @@ const ProjectCategoryCarousel = ({ title, intro, projects }) => {
               key={project._id}
               type="button"
               onClick={() => setActiveIndex(index)}
-              className={index === activeIndex ? 'active' : ''}
+              className={index === safeIndex ? 'active' : ''}
               aria-label={`Show ${project.title}`}
             />
           ))}

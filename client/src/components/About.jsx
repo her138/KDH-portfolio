@@ -1,14 +1,71 @@
-// src/components/About.jsx
-import React from 'react';
+// client/src/components/About.jsx
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { FiDownload, FiMapPin, FiBriefcase, FiFolder } from 'react-icons/fi';
+import { supabase } from '../lib/supabase';
 
-const About = () => {
-  const handleDownloadCV = () => {
-    // The PDF is located in public/documents/ folder
-    const cvPath = `/documents/${encodeURIComponent('latest cv kyle-2.pdf')}`;
-    window.open(cvPath, '_blank');
-  };
+// Used only before the initial fetch or if a row hasn't been imported yet.
+const DEFAULT_CONTENT = {
+  about_heading: "Hello,\nI'm Kyle!",
+  about_intro: 'I am a front-end developer currently pursuing an Advanced Diploma in ICT Multimedia at CPUT. I specialize in building responsive websites, improving functionality, and fixing code issues to create smooth, reliable, and user-friendly digital experiences.',
+  about_mission: 'My mission is to help small businesses grow within their sectors by improving their online presence and exposing them to increased business traffic through effective and modern web solutions.',
+  about_location: 'Cape Town, South Africa',
+  about_experience: '1+ Years',
+  about_projects: '5+ Projects',
+  about_cv: '/documents/latest cv kyle-2.pdf',
+};
+
+export default function About() {
+  const [content, setContent] = useState(DEFAULT_CONTENT);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    let active = true;
+    async function loadAbout() {
+      const { data, error: queryError } = await supabase
+        .from('site_content')
+        .select('section_key, body')
+        .in('section_key', Object.keys(DEFAULT_CONTENT))
+        .eq('is_published', true);
+
+      if (!active) return;
+      if (queryError) {
+        console.error('About section:', queryError);
+        setError('About information could not be refreshed.');
+        return;
+      }
+      const values = Object.fromEntries((data ?? []).map((row) => [row.section_key, row.body ?? '']));
+setContent(
+  Object.fromEntries(
+    Object.keys(DEFAULT_CONTENT).map((key) => [
+      key,
+      values[key] ?? '',
+    ])
+  )
+);      setError('');
+    }
+    const refresh = () => { void loadAbout(); };
+    const refreshIfVisible = () => {
+      if (document.visibilityState === 'visible') void loadAbout();
+    };
+    void loadAbout();
+    window.addEventListener('focus', refresh);
+    document.addEventListener('visibilitychange', refreshIfVisible);
+    return () => {
+      active = false;
+      window.removeEventListener('focus', refresh);
+      document.removeEventListener('visibilitychange', refreshIfVisible);
+    };
+  }, []);
+
+  function handleDownloadCV() {
+    const path = content.about_cv?.trim();
+    if (!path) return;
+    const safe = path.startsWith('https://') ||
+      (path.startsWith('/') && !path.startsWith('//'));
+    if (!safe) return;
+    window.open(encodeURI(path), '_blank', 'noopener,noreferrer');
+  }
 
   return (
     <section id="about" className="section-padding">
@@ -16,13 +73,13 @@ const About = () => {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.6 }}
         >
           <span className="section-title block text-center mb-4">ABOUT ME</span>
+          {error && <p role="status" className="text-sm text-center mb-4">{error}</p>}
 
           <div className="grid lg:grid-cols-2 gap-12 items-start">
-            {/* Left side: large text */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -31,14 +88,12 @@ const About = () => {
               className="text-center lg:text-left"
             >
               <div className="sticky top-32">
-                <h2 className="font-playfair text-6xl lg:text-7xl xl:text-8xl font-bold text-[#252422] dark:text-[#EDEDED] leading-tight">
-                  Hello,<br />
-                  I'm Kyle!
+                <h2 className="font-playfair text-6xl lg:text-7xl xl:text-8xl font-bold text-[#252422] dark:text-[#EDEDED] leading-tight whitespace-pre-line">
+                  {content.about_heading}
                 </h2>
               </div>
             </motion.div>
 
-            {/* Right side: content */}
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -47,39 +102,31 @@ const About = () => {
               className="space-y-8"
             >
               <div className="space-y-6 text-[#403D39] dark:text-[#B0B0B0] text-lg">
-                <p>
-                  I am a front-end developer currently pursuing an Advanced Diploma in ICT Multimedia
-                   at CPUT. I specialize in building responsive websites, improving functionality, 
-                   and fixing code issues to create smooth, reliable, and user-friendly digital 
-                   experiences.
-                </p>
-                <p>
-                  My mission is to help small businesses grow within their sectors by improving their online presence
-                  and exposing them to increased business traffic through effective and modern web solutions.
-                </p>
+                <p>{content.about_intro}</p>
+                <p>{content.about_mission}</p>
               </div>
 
-              {/* Quick Info - Rectangular Containers */}
               <div className="grid grid-cols-3 gap-4">
                 <div className="glass-card flex flex-col items-center justify-center py-6 px-2 text-center hover:translate-y-[-4px] transition-all duration-300">
                   <FiMapPin className="w-6 h-6 text-[#EB5E28] mb-2" />
-                  <span className="text-sm font-medium text-[#252422] dark:text-[#EDEDED]">Cape Town, South Africa</span>
+                  <span className="text-sm font-medium text-[#252422] dark:text-[#EDEDED]">{content.about_location}</span>
                 </div>
                 <div className="glass-card flex flex-col items-center justify-center py-6 px-2 text-center hover:translate-y-[-4px] transition-all duration-300">
                   <FiBriefcase className="w-6 h-6 text-[#EB5E28] mb-2" />
-                  <span className="text-sm font-medium text-[#252422] dark:text-[#EDEDED]">1+ Years</span>
+                  <span className="text-sm font-medium text-[#252422] dark:text-[#EDEDED]">{content.about_experience}</span>
                 </div>
                 <div className="glass-card flex flex-col items-center justify-center py-6 px-2 text-center hover:translate-y-[-4px] transition-all duration-300">
                   <FiFolder className="w-6 h-6 text-[#EB5E28] mb-2" />
-                  <span className="text-sm font-medium text-[#252422] dark:text-[#EDEDED]">5+ Projects</span>
+                  <span className="text-sm font-medium text-[#252422] dark:text-[#EDEDED]">{content.about_projects}</span>
                 </div>
               </div>
 
-              {/* Centered Download Resume Button */}
               <div className="flex justify-center">
                 <button
+                  type="button"
                   onClick={handleDownloadCV}
                   className="glass-button-resume"
+                  disabled={!content.about_cv}
                 >
                   <span className="button-content">
                     <FiDownload size={20} className="button-icon" />
@@ -93,6 +140,4 @@ const About = () => {
       </div>
     </section>
   );
-};
-
-export default About;
+}

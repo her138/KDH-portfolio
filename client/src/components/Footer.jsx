@@ -121,6 +121,12 @@ const Footer = () => {
           </p>
         </div>
       </div>
+      <div className="container-custom flex flex-wrap gap-4 pb-4 text-sm text-[#403D39] dark:text-[#CCC5B9]">
+        <a href="/services" className="hover:text-[#EB5E28]">Services</a>
+        <a href="/request-project" className="hover:text-[#EB5E28]">Request a Project</a>
+        <a href="/privacy" className="hover:text-[#EB5E28]">Privacy</a>
+        <a href="/terms" className="hover:text-[#EB5E28]">Terms</a>
+      </div>
     </footer>
   );
 };
