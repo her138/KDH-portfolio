@@ -49,7 +49,7 @@ const Hero = () => {
             transition={{ delay: 0.3 }}
             className="mb-6"
           >
-            Hi, I’m Kyle. I build websites and web applications.
+            Welcome
           </motion.h1>
 
           <motion.p
