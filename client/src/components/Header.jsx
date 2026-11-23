@@ -21,10 +21,10 @@ const Header = () => {
 
   const navItems = [
     { label: 'Home', path: '/#home' },
-    { label: 'About', path: '/#about' },
-    { label: 'Skills', path: '/#skills' },
     { label: 'Projects', path: '/#projects' },
-    { label: 'Request Project', path: '/request-project' },
+    { label: 'Skills', path: '/#skills' },
+    { label: 'About', path: '/#about' },
+    { label: 'Services', path: '/services' },
     { label: 'Contact', path: '/#contact' },
   ];
 
@@ -37,7 +37,7 @@ const Header = () => {
     },
     {
       icon: FiGithub,
-      href: 'https://github.com/Kyle-Hermanus',
+      href: 'https://github.com/her138',
       label: 'GitHub',
       color: '#333333',
     },
@@ -122,12 +122,19 @@ const Header = () => {
             </Link>
           </motion.div>
 
-          <nav className="hidden md:flex items-center space-x-8">
+          <nav className="hidden lg:flex items-center gap-4 xl:gap-6">
             {navItems.map((item) => (
-              <Link key={item.path} to={item.path} className="nav-link">
+              <Link key={item.path} to={item.path} className="nav-link whitespace-nowrap">
                 {item.label}
               </Link>
             ))}
+
+            <Link
+              to="/request-project"
+              className="inline-flex items-center rounded-full border border-[#EB5E28] px-4 py-2 text-sm font-semibold text-[#EB5E28] hover:bg-[#EB5E28] hover:text-white transition-colors whitespace-nowrap"
+            >
+              Get a Quote
+            </Link>
 
             <button
               onClick={toggleTheme}
@@ -145,8 +152,10 @@ const Header = () => {
 
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden p-2"
-            aria-label="Toggle menu"
+            className="lg:hidden p-2"
+            aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={isMenuOpen}
+            aria-controls="mobile-site-navigation"
             type="button"
           >
             {isMenuOpen ? (
@@ -161,11 +170,12 @@ const Header = () => {
       <AnimatePresence>
         {isMenuOpen && (
           <motion.nav
+            id="mobile-site-navigation"
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className="md:hidden"
+            className="lg:hidden"
           >
             <div className="relative">
               <div className="absolute inset-0 bg-[#FFFCF2] dark:bg-[#1a1a1a] z-0"></div>
@@ -199,6 +209,13 @@ const Header = () => {
                       <FiChevronRight size={20} className="text-[#CCC5B9]" />
                     </Link>
                   ))}
+                  <Link
+                    to="/request-project"
+                    onClick={closeMobileMenu}
+                    className="mt-2 flex items-center justify-center rounded-full bg-[#EB5E28] px-5 py-3 font-semibold text-white hover:opacity-90 transition-opacity"
+                  >
+                    Get a Quote
+                  </Link>
                 </div>
 
                 <div className="mt-8 pt-6 border-t border-[#CCC5B9] dark:border-[#403D39]">
@@ -214,6 +231,7 @@ const Header = () => {
                         <motion.a
                           key={link.label}
                           href={link.href}
+                          aria-label={link.label}
                           target="_blank"
                           rel="noopener noreferrer"
                           whileTap={{ scale: 0.95 }}

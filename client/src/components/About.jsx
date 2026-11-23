@@ -1,14 +1,15 @@
 // client/src/components/About.jsx
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { FiDownload, FiMapPin, FiBriefcase, FiFolder } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
+import { FiArrowRight, FiDownload, FiMapPin, FiBriefcase, FiFolder } from 'react-icons/fi';
 import { supabase } from '../lib/supabase';
 
-// Used only before the initial fetch or if a row hasn't been imported yet.
+// These values are only fallbacks. Published About content in Supabase remains editable in admin.
 const DEFAULT_CONTENT = {
   about_heading: "Hello,\nI'm Kyle!",
-  about_intro: 'I am a front-end developer currently pursuing an Advanced Diploma in ICT Multimedia at CPUT. I specialize in building responsive websites, improving functionality, and fixing code issues to create smooth, reliable, and user-friendly digital experiences.',
-  about_mission: 'My mission is to help small businesses grow within their sectors by improving their online presence and exposing them to increased business traffic through effective and modern web solutions.',
+  about_intro: 'I am a web and software developer pursuing an Advanced Diploma in ICT Multimedia at CPUT. I work on responsive interfaces, backend functionality and practical web solutions, with a focus on making digital products easy to use.',
+  about_mission: 'I am interested in junior software development opportunities and helping businesses improve their online presence with useful, well-built websites and applications.',
   about_location: 'Cape Town, South Africa',
   about_experience: '1+ Years',
   about_projects: '5+ Projects',
@@ -21,6 +22,7 @@ export default function About() {
 
   useEffect(() => {
     let active = true;
+
     async function loadAbout() {
       const { data, error: queryError } = await supabase
         .from('site_content')
@@ -29,28 +31,35 @@ export default function About() {
         .eq('is_published', true);
 
       if (!active) return;
+
       if (queryError) {
         console.error('About section:', queryError);
         setError('About information could not be refreshed.');
         return;
       }
-      const values = Object.fromEntries((data ?? []).map((row) => [row.section_key, row.body ?? '']));
-setContent(
-  Object.fromEntries(
-    Object.keys(DEFAULT_CONTENT).map((key) => [
-      key,
-      values[key] ?? '',
-    ])
-  )
-);      setError('');
+
+      const values = Object.fromEntries(
+        (data ?? []).map((row) => [row.section_key, row.body ?? ''])
+      );
+
+      // Preserve intentional empty admin fields, but fall back when a row is absent.
+      setContent(
+        Object.fromEntries(
+          Object.keys(DEFAULT_CONTENT).map((key) => [key, values[key] ?? DEFAULT_CONTENT[key]])
+        )
+      );
+      setError('');
     }
+
     const refresh = () => { void loadAbout(); };
     const refreshIfVisible = () => {
       if (document.visibilityState === 'visible') void loadAbout();
     };
+
     void loadAbout();
     window.addEventListener('focus', refresh);
     document.addEventListener('visibilitychange', refreshIfVisible);
+
     return () => {
       active = false;
       window.removeEventListener('focus', refresh);
@@ -58,7 +67,7 @@ setContent(
     };
   }, []);
 
-  function handleDownloadCV() {
+  function handleViewCV() {
     const path = content.about_cv?.trim();
     if (!path) return;
     const safe = path.startsWith('https://') ||
@@ -68,7 +77,7 @@ setContent(
   }
 
   return (
-    <section id="about" className="section-padding">
+    <section id="about" className="section-padding scroll-mt-20">
       <div className="container-custom">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -101,38 +110,51 @@ setContent(
               transition={{ delay: 0.3 }}
               className="space-y-8"
             >
-              <div className="space-y-6 text-[#403D39] dark:text-[#B0B0B0] text-lg">
-                <p>{content.about_intro}</p>
-                <p>{content.about_mission}</p>
+              <p className="text-sm uppercase tracking-wider font-semibold text-[#EB5E28]">
+                Open to junior developer roles &amp; freelance projects
+              </p>
+
+              <div className="space-y-6 text-[#403D39] dark:text-[#B0B0B0] text-lg leading-relaxed">
+                {content.about_intro && <p>{content.about_intro}</p>}
+                {content.about_mission && <p>{content.about_mission}</p>}
               </div>
 
               <div className="grid grid-cols-3 gap-4">
                 <div className="glass-card flex flex-col items-center justify-center py-6 px-2 text-center hover:translate-y-[-4px] transition-all duration-300">
-                  <FiMapPin className="w-6 h-6 text-[#EB5E28] mb-2" />
+                  <FiMapPin className="w-6 h-6 text-[#EB5E28] mb-2" aria-hidden="true" />
+                  <span className="text-xs uppercase tracking-wider text-[#403D39] dark:text-[#B0B0B0] mb-1">Location</span>
                   <span className="text-sm font-medium text-[#252422] dark:text-[#EDEDED]">{content.about_location}</span>
                 </div>
                 <div className="glass-card flex flex-col items-center justify-center py-6 px-2 text-center hover:translate-y-[-4px] transition-all duration-300">
-                  <FiBriefcase className="w-6 h-6 text-[#EB5E28] mb-2" />
+                  <FiBriefcase className="w-6 h-6 text-[#EB5E28] mb-2" aria-hidden="true" />
+                  <span className="text-xs uppercase tracking-wider text-[#403D39] dark:text-[#B0B0B0] mb-1">Experience</span>
                   <span className="text-sm font-medium text-[#252422] dark:text-[#EDEDED]">{content.about_experience}</span>
                 </div>
                 <div className="glass-card flex flex-col items-center justify-center py-6 px-2 text-center hover:translate-y-[-4px] transition-all duration-300">
-                  <FiFolder className="w-6 h-6 text-[#EB5E28] mb-2" />
+                  <FiFolder className="w-6 h-6 text-[#EB5E28] mb-2" aria-hidden="true" />
+                  <span className="text-xs uppercase tracking-wider text-[#403D39] dark:text-[#B0B0B0] mb-1">Projects</span>
                   <span className="text-sm font-medium text-[#252422] dark:text-[#EDEDED]">{content.about_projects}</span>
                 </div>
               </div>
 
-              <div className="flex justify-center">
+              <div className="flex flex-wrap justify-center lg:justify-start items-center gap-5">
                 <button
                   type="button"
-                  onClick={handleDownloadCV}
+                  onClick={handleViewCV}
                   className="glass-button-resume"
-                  disabled={!content.about_cv}
+                  disabled={!content.about_cv?.trim()}
                 >
                   <span className="button-content">
-                    <FiDownload size={20} className="button-icon" />
-                    <span>Download Resume</span>
+                    <FiDownload size={20} className="button-icon" aria-hidden="true" />
+                    <span>View My CV</span>
                   </span>
                 </button>
+                <Link
+                  to="/#contact"
+                  className="inline-flex items-center gap-2 text-[#EB5E28] font-semibold hover:underline"
+                >
+                  Get in touch <FiArrowRight aria-hidden="true" />
+                </Link>
               </div>
             </motion.div>
           </div>

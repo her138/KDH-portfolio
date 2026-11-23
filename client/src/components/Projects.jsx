@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { FiArrowRight, FiEye, FiX } from 'react-icons/fi';
+import { FiArrowRight, FiEye, FiX, FiGithub } from 'react-icons/fi';
 import GlassButton from './GlassButton';
 
 const filterTypes = [
@@ -13,6 +13,12 @@ const filterTypes = [
   { label: 'UI/UX', value: 'ui_design' },
   { label: 'Logo', value: 'logo' },
 ];
+
+// Only open normal web links or safe local paths from project records.
+const isSafeProjectLink = (value) =>
+  typeof value === 'string' &&
+  (/^https?:\/\//i.test(value.trim()) ||
+    (value.trim().startsWith('/') && !value.trim().startsWith('//')));
 
 const Projects = () => {
   const navigate = useNavigate();
@@ -82,6 +88,16 @@ const Projects = () => {
   }, []);
 
 
+  // Allow keyboard users to close an open project preview.
+  useEffect(() => {
+    if (!selectedProject) return undefined;
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') setSelectedProject(null);
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [selectedProject]);
+
   const filteredProjects =
     filter === 'all'
       ? projectsData
@@ -90,7 +106,7 @@ const Projects = () => {
   const displayedProjects = filteredProjects.slice(0, 6);
 
   const openProject = (url) => {
-    if (!url || url === '#') return;
+    if (!isSafeProjectLink(url)) return;
 
     window.open(url, '_blank', 'noopener,noreferrer');
   };
@@ -116,9 +132,12 @@ const Projects = () => {
             PROJECTS
           </span>
 
-          <h2 className="font-playfair text-4xl font-semibold text-center mb-12">
+          <h2 className="font-playfair text-4xl font-semibold text-center mb-4">
             Selected Work
           </h2>
+          <p className="text-center text-[#403D39] dark:text-[#B0B0B0] max-w-2xl mx-auto mb-12">
+            A selection of websites, applications and design work. Open a project to learn more about the build and technologies used.
+          </p>
 
           <div className="flex flex-wrap justify-center gap-3 mb-12">
             {filterTypes.map((type) => (
@@ -149,15 +168,31 @@ const Projects = () => {
                 className="col-span-12 md:col-span-6 lg:col-span-4"
               >
                 <div
-                  className="project-card group"
+                  className="project-card group cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#EB5E28]"
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`View details for ${project.title}`}
                   onClick={() => setSelectedProject(project)}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                      event.preventDefault();
+                      setSelectedProject(project);
+                    }
+                  }}
                 >
                   <div className="relative overflow-hidden rounded-xl">
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      className="project-image"
-                    />
+                    {project.image ? (
+                      <img
+                        src={project.image}
+                        alt={`Preview of ${project.title}`}
+                        loading="lazy"
+                        className="project-image"
+                      />
+                    ) : (
+                      <div className="project-image flex items-center justify-center bg-[#CCC5B9]/30 dark:bg-[#333] text-[#403D39] dark:text-[#B0B0B0]">
+                        Project preview coming soon
+                      </div>
+                    )}
 
                     <div className="absolute inset-0 bg-[#252422]/0 group-hover:bg-[#252422]/40 transition-all duration-300 flex items-center justify-center">
                       <FiEye className="text-[#FFFCF2] opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0 icon-lg" />
@@ -241,11 +276,17 @@ const Projects = () => {
                 style={{ maxHeight: 'calc(90vh - 100px)' }}
               >
                 <div className="grid md:grid-cols-2 gap-6">
-                  <img
-                    src={selectedProject.image}
-                    alt={selectedProject.title}
-                    className="w-full img-rounded"
-                  />
+                  {selectedProject.image ? (
+                    <img
+                      src={selectedProject.image}
+                      alt={`Preview of ${selectedProject.title}`}
+                      className="w-full img-rounded"
+                    />
+                  ) : (
+                    <div className="w-full min-h-48 rounded-xl flex items-center justify-center bg-[#CCC5B9]/30 dark:bg-[#333]">
+                      Project preview coming soon
+                    </div>
+                  )}
 
                   <div className="space-y-6">
                     <div>
@@ -273,8 +314,7 @@ const Projects = () => {
                     </div>
 
                     <div className="flex flex-col sm:flex-row gap-3 pt-4">
-                      {selectedProject.projectUrl &&
-                        selectedProject.projectUrl !== '#' && (
+                      {isSafeProjectLink(selectedProject.projectUrl) && (
                           <GlassButton
                             onClick={() =>
                               openProject(selectedProject.projectUrl)
@@ -285,8 +325,18 @@ const Projects = () => {
                           </GlassButton>
                         )}
 
+                      {isSafeProjectLink(selectedProject.github) && (
+                          <GlassButton
+                            onClick={() => openProject(selectedProject.github)}
+                            icon={FiGithub}
+                            className="flex-1"
+                          >
+                            Source Code
+                          </GlassButton>
+                        )}
+
                       {selectedProject.overviewUrl && (
-                        <GlassButton
+                          <GlassButton
                           onClick={() =>
                             openOverview(selectedProject.overviewUrl)
                           }
