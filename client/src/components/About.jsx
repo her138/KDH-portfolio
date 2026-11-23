@@ -13,7 +13,7 @@ const DEFAULT_CONTENT = {
   about_location: 'Cape Town, South Africa',
   about_experience: '1+ Years',
   about_projects: '5+ Projects',
-  about_cv: '/documents/latest cv kyle-2.pdf',
+  about_cv: '/documents/KDHermanus Cv.pdf',
 };
 
 export default function About() {

@@ -68,12 +68,22 @@ const Hero = () => {
             transition={{ delay: 0.5 }}
             className="flex flex-wrap justify-center gap-4 mb-9"
           >
-            <GlassButton icon={FiArrowRight} onClick={() => navigate('/#projects')}>
-              View My Projects
-            </GlassButton>
-            <GlassButton icon={FiMessageCircle} onClick={() => navigate('/request-project')}>
-              Request a Quote
-            </GlassButton>
+
+<GlassButton
+  icon={FiArrowRight}
+  onClick={() => navigate('/#projects')}
+>
+  View My Work
+</GlassButton>
+
+<GlassButton
+  icon={FiMessageCircle}
+  className="glass-button-orange"
+  onClick={() => navigate('/request-project')}
+>
+  Get a Quote
+</GlassButton>
+
           </motion.div>
 
           {/* Informational badges, not fake clickable buttons. */}

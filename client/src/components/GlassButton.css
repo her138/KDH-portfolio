@@ -345,3 +345,92 @@
     padding: 0.6em;
   }
 }
+
+/* Orange Glass Button Variant */
+
+.glass-button.glass-button-orange {
+  color: #252422;
+
+  background: linear-gradient(
+    -75deg,
+    rgba(235, 94, 40, 0.13),
+    rgba(255, 174, 130, 0.38),
+    rgba(235, 94, 40, 0.18)
+  );
+
+  box-shadow:
+    inset 0 2px 3px rgba(255, 255, 255, 0.55),
+    inset 0 -2px 3px rgba(235, 94, 40, 0.18),
+    0 4px 14px rgba(235, 94, 40, 0.16);
+
+  backdrop-filter: blur(8px);
+}
+
+/* Orange reflective outline */
+.glass-button.glass-button-orange::after {
+  background:
+    conic-gradient(
+      from var(--angle-1) at 50% 50%,
+      rgba(235, 94, 40, 0.85),
+      transparent 15% 40%,
+      rgba(235, 94, 40, 0.7) 50%,
+      transparent 65% 95%,
+      rgba(235, 94, 40, 0.85)
+    ),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.7),
+      rgba(235, 94, 40, 0.35)
+    );
+}
+
+/* Orange glow underneath */
+.glass-button-wrapper:has(.glass-button-orange)
+.button-shadow::after {
+  background: linear-gradient(
+    180deg,
+    rgba(235, 94, 40, 0.22),
+    rgba(235, 94, 40, 0.08)
+  );
+}
+
+/* Hover */
+.glass-button.glass-button-orange:hover {
+  background: linear-gradient(
+    -75deg,
+    rgba(235, 94, 40, 0.25),
+    rgba(255, 174, 130, 0.52),
+    rgba(235, 94, 40, 0.3)
+  );
+
+  box-shadow:
+    inset 0 2px 3px rgba(255, 255, 255, 0.65),
+    inset 0 -2px 4px rgba(235, 94, 40, 0.2),
+    0 5px 18px rgba(235, 94, 40, 0.25);
+}
+
+/* Keyboard accessibility */
+.glass-button.glass-button-orange:focus-visible {
+  outline: 2px solid #eb5e28;
+  outline-offset: 4px;
+}
+
+/* Dark mode */
+.dark .glass-button.glass-button-orange {
+  color: #fffcf2;
+  background: linear-gradient(
+    -75deg,
+    rgba(235, 94, 40, 0.18),
+    rgba(235, 94, 40, 0.38),
+    rgba(235, 94, 40, 0.2)
+  );
+}
+
+.dark .glass-button.glass-button-orange:hover {
+  background: linear-gradient(
+    -75deg,
+    rgba(235, 94, 40, 0.28),
+    rgba(235, 94, 40, 0.5),
+    rgba(235, 94, 40, 0.3)
+  );
+}
