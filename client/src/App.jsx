@@ -19,6 +19,9 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 import SiteMeta from './components/SiteMeta';
 
+import PreviousSectionButton from './components/PreviousSectionButton';
+
+
 // Admin route protection
 import ProtectedAdmin from './pages/Admin/ProtectedAdmin';
 
@@ -292,7 +295,9 @@ function AppContent() {
         </Routes>
       </Suspense>
 
-      {!isAdminPage && <Footer />}
+
+{!isAdminPage && <Footer />}
+{!isAdminPage && <PreviousSectionButton />}
     </div>
   );
 }
